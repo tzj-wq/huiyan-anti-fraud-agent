@@ -1,0 +1,566 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>慧眼识诈 - 案件审理处置</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+<script src="app-state.js"></script>
+<style>
+        body {
+            font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+            background:
+                radial-gradient(circle at right top, rgba(30, 64, 175, 0.08), transparent 28%),
+                linear-gradient(180deg, #f8fafc 0%, #eff6ff 100%);
+        }
+
+        .panel-card {
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 1.25rem;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 16px 40px -28px rgba(15, 23, 42, 0.24);
+        }
+
+        .case-row {
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .case-row:hover,
+        .case-row:focus-visible {
+            background: #eff6ff;
+            transform: translateX(2px);
+            outline: none;
+        }
+
+        .cot-node {
+            position: relative;
+            padding-left: 2.2rem;
+        }
+
+        .cot-node::before {
+            content: "";
+            position: absolute;
+            left: 0.8rem;
+            top: 0;
+            bottom: -1rem;
+            width: 2px;
+            background: #dbeafe;
+        }
+
+        .cot-node:last-child::before {
+            bottom: 1.2rem;
+        }
+
+        .cot-dot {
+            position: absolute;
+            left: 0.45rem;
+            top: 0.8rem;
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 999px;
+            border: 2px solid white;
+            box-shadow: 0 0 0 4px rgba(219, 234, 254, 0.6);
+        }
+
+        .focus-ring:focus-visible {
+            outline: 3px solid rgba(30, 64, 175, 0.22);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-900 lg:flex">
+<aside class="w-full bg-slate-950 text-slate-300 lg:h-screen lg:w-64 lg:shrink-0">
+<div class="flex items-center gap-3 border-b border-slate-800 px-6 py-5">
+<div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-700 text-white shadow-lg shadow-blue-900/30">
+<iconify-icon icon="mdi:shield-search" width="24"></iconify-icon>
+</div>
+<div>
+<p class="text-lg font-bold tracking-tight text-white">慧眼识诈</p>
+<p class="text-xs text-slate-400">案件审理工作台</p>
+</div>
+</div>
+<nav class="space-y-1 px-4 py-5">
+<a class="flex items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-slate-800" href="index.html">
+<iconify-icon icon="mdi:view-dashboard" width="20"></iconify-icon>
+<span>风险监控中心</span>
+</a>
+<a class="flex items-center gap-3 rounded-xl bg-blue-700 px-4 py-3 text-white" href="cases.html">
+<iconify-icon icon="mdi:alert-decagram" width="20"></iconify-icon>
+<span class="font-medium">案件审理处置</span>
+</a>
+<a class="flex items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-slate-800" href="strategy.html">
+<iconify-icon icon="mdi:graph-outline" width="20"></iconify-icon>
+<span>策略配置中心</span>
+</a>
+<a class="flex items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-slate-800" href="data.html">
+<iconify-icon icon="mdi:database-settings" width="20"></iconify-icon>
+<span>基础数据管理</span>
+</a>
+</nav>
+<div class="px-4 pb-5">
+<div class="rounded-2xl border border-slate-800 bg-slate-900 p-4 text-sm text-slate-300">
+<p class="font-semibold text-white">人工复核准则</p>
+<ul class="mt-3 space-y-2 text-xs text-slate-400">
+<li>一致性低于阈值自动进入人工仲裁。</li>
+<li>判定结果必须结构化存储。</li>
+<li>所有人工操作写入审计日志。</li>
+</ul>
+</div>
+</div>
+</aside>
+<main class="flex min-h-screen flex-1 flex-col lg:h-screen">
+<header class="border-b border-slate-200 bg-white/80 px-5 py-4 backdrop-blur lg:px-8">
+<div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+<div>
+<h1 class="text-2xl font-bold text-slate-900">案件审理工作台</h1>
+<p class="mt-1 text-sm text-slate-500">支持智能体证据链查看、人工仲裁、误报回收与知识共享池回灌</p>
+</div>
+<div class="flex flex-wrap items-center gap-3">
+<label class="relative block">
+<span class="sr-only">搜索案件</span>
+<input class="focus-ring w-72 rounded-2xl border border-slate-200 bg-white py-3 pl-11 pr-4 text-sm text-slate-700 shadow-sm" id="searchInput" placeholder="搜索案件ID、账号、手机号、UID" type="search"/>
+<iconify-icon class="absolute left-4 top-3.5 text-slate-400" icon="mdi:magnify" width="20"></iconify-icon>
+</label>
+<button class="focus-ring relative rounded-2xl border border-slate-200 bg-white p-3 text-slate-500" type="button">
+<iconify-icon icon="mdi:bell-outline" width="22"></iconify-icon>
+<span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500"></span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-hidden px-5 py-6 lg:px-8">
+<div class="grid h-full gap-6 xl:grid-cols-[minmax(520px,1.1fr)_minmax(420px,1fr)]">
+<section class="panel-card flex min-h-0 flex-col overflow-hidden">
+<div class="border-b border-slate-100 px-5 py-4 lg:px-6">
+<div class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+<select class="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700" id="riskFilter">
+<option value="all">风险等级: 全部</option>
+<option value="critical">高风险 (90-100)</option>
+<option value="high">中高风险 (80-89)</option>
+<option value="medium">中风险 (60-79)</option>
+</select>
+<select class="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700" id="statusFilter">
+<option value="all">状态: 全部</option>
+<option value="待审理">待审理</option>
+<option value="处理中">处理中</option>
+<option value="已完成">已完成</option>
+</select>
+<select class="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700" id="regionFilter">
+<option value="all">区域: 全部</option>
+</select>
+<button class="focus-ring rounded-xl border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-blue-700 transition hover:bg-slate-100" id="toggleAdvanced" type="button">高级筛选</button>
+</div>
+<div class="mt-4 hidden rounded-2xl bg-slate-50 p-4" id="advancedFilters">
+<div class="grid gap-3 md:grid-cols-3">
+<select class="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700" id="verdictFilter">
+<option value="all">复核结论: 全部</option>
+<option value="欺诈">欺诈</option>
+<option value="误报">误报</option>
+<option value="待观察">待观察</option>
+<option value="需补充">需补充</option>
+</select>
+<select class="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-700" id="arbitrationFilter">
+<option value="all">仲裁状态: 全部</option>
+<option value="needs">需仲裁</option>
+<option value="normal">无需仲裁</option>
+</select>
+<button class="focus-ring rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600" id="resetFilters" type="button">重置筛选</button>
+</div>
+</div>
+<div class="mt-4 grid gap-3 md:grid-cols-3" id="queueStats"></div>
+</div>
+<div class="min-h-0 flex-1 overflow-auto">
+<table class="w-full min-w-[760px] text-left">
+<thead class="sticky top-0 bg-slate-50 text-[11px] uppercase tracking-[0.18em] text-slate-500">
+<tr>
+<th class="px-6 py-4 font-semibold">案件ID</th>
+<th class="px-6 py-4 font-semibold">账号信息</th>
+<th class="px-6 py-4 font-semibold">风险评分</th>
+<th class="px-6 py-4 font-semibold">欺诈类型</th>
+<th class="px-6 py-4 font-semibold">发生时间</th>
+<th class="px-6 py-4 font-semibold">状态</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 text-sm" id="caseTableBody"></tbody>
+</table>
+</div>
+</section>
+<section class="flex min-h-0 flex-col gap-6 overflow-y-auto pr-1">
+<div class="panel-card p-5 lg:p-6">
+<div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+<div>
+<div class="flex flex-wrap items-center gap-2">
+<h2 class="text-2xl font-bold text-slate-900" id="detailCaseId">--</h2>
+<span class="rounded-full px-2 py-0.5 text-xs font-bold" id="detailStatusBadge">待审理</span>
+</div>
+<p class="mt-2 text-sm text-slate-500" id="detailEngineInfo">检测引擎: Multi-Agent AutoGen V2.4</p>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="focus-ring rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700" id="markFalsePositive" type="button">标记误报</button>
+<button class="focus-ring rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-red-200 transition hover:bg-red-700" id="banCaseButton" type="button">一键封禁</button>
+</div>
+</div>
+<div class="mt-5 grid gap-4 md:grid-cols-3" id="detailMetrics"></div>
+<div class="mt-4 hidden rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800" id="arbitrationBanner"></div>
+</div>
+<div class="panel-card p-5 lg:p-6">
+<div class="mb-5 flex items-center justify-between">
+<div>
+<h3 class="flex items-center gap-2 text-lg font-bold text-slate-900">
+<iconify-icon class="text-blue-700" icon="mdi:brain"></iconify-icon>
+<span>智能体协同决策链路</span>
+</h3>
+<p class="mt-1 text-sm text-slate-500">完整展示所有 Agent 的推理依据，满足合规审计和人工追溯要求</p>
+</div>
+<span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700" id="consensusBadge">共识度 --</span>
+</div>
+<div class="space-y-4" id="evidenceChain"></div>
+</div>
+<div class="panel-card p-5 lg:p-6">
+<div class="mb-5 flex items-center justify-between">
+<div>
+<h3 class="text-lg font-bold text-slate-900">人工复核与反馈</h3>
+<p class="mt-1 text-sm text-slate-500">判定选项覆盖欺诈、误报、待观察、需补充，并同步更新审计日志与知识共享池</p>
+</div>
+<span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-500" id="knowledgeHint">知识池待更新</span>
+</div>
+<form class="space-y-5" id="reviewForm">
+<div class="grid gap-3 md:grid-cols-2">
+<label class="focus-ring flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4" tabindex="0">
+<input class="mt-1" name="reviewVerdict" type="radio" value="欺诈"/>
+<span>
+<span class="block text-sm font-semibold text-slate-900">欺诈</span>
+<span class="mt-1 block text-xs leading-5 text-slate-500">确认拦截并入库，作为高置信度样本沉淀。</span>
+</span>
+</label>
+<label class="focus-ring flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4" tabindex="0">
+<input class="mt-1" name="reviewVerdict" type="radio" value="误报"/>
+<span>
+<span class="block text-sm font-semibold text-slate-900">误报</span>
+<span class="mt-1 block text-xs leading-5 text-slate-500">回收错误规则特征，避免重复拦截真实用户。</span>
+</span>
+</label>
+<label class="focus-ring flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4" tabindex="0">
+<input class="mt-1" name="reviewVerdict" type="radio" value="待观察"/>
+<span>
+<span class="block text-sm font-semibold text-slate-900">待观察</span>
+<span class="mt-1 block text-xs leading-5 text-slate-500">保持监控，暂不封禁，继续累积证据链。</span>
+</span>
+</label>
+<label class="focus-ring flex cursor-pointer items-start gap-3 rounded-2xl border border-slate-200 bg-white p-4" tabindex="0">
+<input class="mt-1" name="reviewVerdict" type="radio" value="需补充"/>
+<span>
+<span class="block text-sm font-semibold text-slate-900">需补充</span>
+<span class="mt-1 block text-xs leading-5 text-slate-500">要求补充外部接口、设备轨迹或人工回访证据。</span>
+</span>
+</label>
+</div>
+<div>
+<label class="mb-2 block text-sm font-semibold text-slate-700" for="reviewComment">复核意见</label>
+<textarea class="focus-ring min-h-[120px] w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700" id="reviewComment" placeholder="请输入复核依据、操作说明或需要补充的证据项..." required></textarea>
+</div>
+<div class="grid gap-3 md:grid-cols-2" id="feedbackPreview"></div>
+<div class="flex flex-wrap justify-end gap-3">
+<button class="focus-ring rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700" id="manualReviewButton" type="button">转人工二审</button>
+<button class="focus-ring rounded-xl bg-blue-700 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-200 transition hover:bg-blue-800" type="submit">确认结论并入库</button>
+</div>
+</form>
+</div>
+</section>
+</div>
+</div>
+</main>
+<script>
+        const store = window.PlatformStore;
+        const query = new URLSearchParams(window.location.search);
+
+        const searchInput = document.getElementById('searchInput');
+        const riskFilter = document.getElementById('riskFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        const regionFilter = document.getElementById('regionFilter');
+        const verdictFilter = document.getElementById('verdictFilter');
+        const arbitrationFilter = document.getElementById('arbitrationFilter');
+        const toggleAdvanced = document.getElementById('toggleAdvanced');
+        const advancedFilters = document.getElementById('advancedFilters');
+        const resetFilters = document.getElementById('resetFilters');
+        const reviewForm = document.getElementById('reviewForm');
+        const reviewComment = document.getElementById('reviewComment');
+        const feedbackPreview = document.getElementById('feedbackPreview');
+
+        let selectedCaseId = query.get('case') || '';
+        let currentCases = [];
+
+        function severityFromScore(score) {
+            if (score >= 90) return 'critical';
+            if (score >= 80) return 'high';
+            return 'medium';
+        }
+
+        function buildFilters(state) {
+            const selectedRegion = regionFilter.value || 'all';
+            const regions = Array.from(new Set(state.cases.map((item) => item.region)));
+            regionFilter.innerHTML = '<option value="all">区域: 全部</option>' + regions.map((region) => `<option value="${region}">${region}</option>`).join('');
+            regionFilter.value = regions.includes(selectedRegion) ? selectedRegion : 'all';
+        }
+
+        function filteredCases(state) {
+            const keyword = searchInput.value.trim().toLowerCase();
+            return state.cases.filter((item) => {
+                const severity = item.severity || severityFromScore(item.riskScore);
+                const matchesKeyword = !keyword || [item.id, item.accountName, item.phone, item.uid, item.fraudType].join(' ').toLowerCase().includes(keyword);
+                const matchesRisk = riskFilter.value === 'all' || severity === riskFilter.value;
+                const matchesStatus = statusFilter.value === 'all' || item.status === statusFilter.value;
+                const matchesRegion = regionFilter.value === 'all' || item.region === regionFilter.value;
+                const matchesVerdict = verdictFilter.value === 'all' || item.verdict === verdictFilter.value;
+                const matchesArbitration = arbitrationFilter.value === 'all'
+                    || (arbitrationFilter.value === 'needs' && item.consensus < state.strategy.threshold)
+                    || (arbitrationFilter.value === 'normal' && item.consensus >= state.strategy.threshold);
+                return matchesKeyword && matchesRisk && matchesStatus && matchesRegion && matchesVerdict && matchesArbitration;
+            }).sort((a, b) => b.riskScore - a.riskScore);
+        }
+
+        function renderQueueStats(state, cases) {
+            const pending = cases.filter((item) => item.status === '待审理').length;
+            const reviewing = cases.filter((item) => item.status === '处理中').length;
+            const arbitration = cases.filter((item) => item.consensus < state.strategy.threshold).length;
+            document.getElementById('queueStats').innerHTML = `
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <p class="text-xs text-slate-400">当前筛选案件</p>
+                    <p class="mt-2 text-xl font-bold text-slate-900">${cases.length}</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <p class="text-xs text-slate-400">待审理 / 处理中</p>
+                    <p class="mt-2 text-xl font-bold text-slate-900">${pending} / ${reviewing}</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <p class="text-xs text-slate-400">需人工仲裁</p>
+                    <p class="mt-2 text-xl font-bold text-amber-600">${arbitration}</p>
+                </div>
+            `;
+        }
+
+        function renderTable(state) {
+            currentCases = filteredCases(state);
+            if (!selectedCaseId || !currentCases.some((item) => item.id === selectedCaseId)) {
+                selectedCaseId = currentCases[0]?.id || '';
+            }
+            renderQueueStats(state, currentCases);
+
+            document.getElementById('caseTableBody').innerHTML = currentCases.map((item) => {
+                const selected = item.id === selectedCaseId;
+                const tone = store.getSeverityTone(item.severity || severityFromScore(item.riskScore));
+                const statusTone = store.getStatusTone(item.status);
+                return `
+                    <tr class="case-row ${selected ? 'bg-blue-50/80' : 'bg-white'}" data-case-id="${item.id}" tabindex="0">
+                        <td class="px-6 py-4 font-mono font-bold ${selected ? 'text-blue-700' : 'text-slate-800'}">${item.id}</td>
+                        <td class="px-6 py-4">
+                            <p class="font-semibold text-slate-900">${item.accountName} (${item.phone})</p>
+                            <p class="text-xs text-slate-400">UID: ${item.uid} · ${item.region}</p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="rounded-full ${tone.badge} px-2 py-1 text-xs font-bold">${item.riskScore}/100</span>
+                        </td>
+                        <td class="px-6 py-4 text-slate-600">${item.fraudType}</td>
+                        <td class="px-6 py-4 text-slate-500">${item.time}</td>
+                        <td class="px-6 py-4">
+                            <span class="rounded-full ${statusTone.badge} px-2 py-1 text-[11px] font-bold">${statusTone.label}</span>
+                        </td>
+                    </tr>
+                `;
+            }).join('') || '<tr><td class="px-6 py-10 text-center text-sm text-slate-500" colspan="6">当前筛选条件下没有案件。</td></tr>';
+
+            document.querySelectorAll('[data-case-id]').forEach((row) => {
+                row.addEventListener('click', () => {
+                    selectedCaseId = row.dataset.caseId;
+                    render();
+                });
+                row.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        selectedCaseId = row.dataset.caseId;
+                        render();
+                    }
+                });
+            });
+        }
+
+        function currentCase(state) {
+            return state.cases.find((item) => item.id === selectedCaseId) || state.cases[0];
+        }
+
+        function renderDetail(state) {
+            const item = currentCase(state);
+            if (!item) {
+                return;
+            }
+            const statusTone = store.getStatusTone(item.status);
+            document.getElementById('detailCaseId').textContent = `案件详情: ${item.id}`;
+            document.getElementById('detailStatusBadge').className = `rounded-full px-2 py-0.5 text-xs font-bold ${statusTone.badge}`;
+            document.getElementById('detailStatusBadge').textContent = statusTone.label;
+            document.getElementById('detailEngineInfo').textContent = `检测引擎: Multi-Agent AutoGen V2.4 · 推荐动作: ${item.recommendedAction}`;
+            document.getElementById('consensusBadge').textContent = `共识度 ${item.consensus}%`;
+            document.getElementById('knowledgeHint').textContent = state.strategy.rlhfEnabled ? 'RLHF 已启用，反馈将回灌知识池' : 'RLHF 未启用，仍保留结构化反馈';
+
+            const metricCards = [
+                { label: '核心风险特征', value: item.features.join(' · '), tone: 'text-blue-700' },
+                { label: '涉及金额', value: store.formatCurrency(item.amount), tone: 'text-slate-900' },
+                { label: '决策共识度', value: `${item.consensus}%`, tone: item.consensus < state.strategy.threshold ? 'text-amber-600' : 'text-emerald-600' }
+            ];
+            document.getElementById('detailMetrics').innerHTML = metricCards.map((card) => `
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400">${card.label}</p>
+                    <p class="mt-3 text-sm font-bold ${card.tone}">${card.value}</p>
+                </div>
+            `).join('');
+
+            const arbitrationBanner = document.getElementById('arbitrationBanner');
+            if (item.consensus < state.strategy.threshold || item.needsArbitration) {
+                arbitrationBanner.classList.remove('hidden');
+                arbitrationBanner.textContent = `该案件一致性 ${item.consensus}% 低于当前人工仲裁阈值 ${state.strategy.threshold}%，必须由人工给出最终结论。`;
+            } else {
+                arbitrationBanner.classList.add('hidden');
+                arbitrationBanner.textContent = '';
+            }
+
+            document.getElementById('evidenceChain').innerHTML = item.evidenceChain.map((node) => {
+                const dotColor = node.color === 'red' ? '#dc2626' : node.color === 'purple' ? '#7c3aed' : node.color === 'green' ? '#059669' : node.color === 'teal' ? '#0f766e' : '#2563eb';
+                return `
+                    <div class="cot-node rounded-2xl bg-slate-50 p-4">
+                        <span class="cot-dot" style="background:${dotColor};"></span>
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="text-sm font-bold text-slate-800">${node.agent}</span>
+                            <span class="rounded-full bg-white px-2 py-0.5 text-[11px] font-medium text-slate-500">${node.time}</span>
+                        </div>
+                        <p class="mt-3 text-sm leading-6 text-slate-600">${node.summary}</p>
+                        <p class="mt-3 text-sm font-bold" style="color:${dotColor};">${node.scoreText}</p>
+                    </div>
+                `;
+            }).join('');
+
+            const radios = reviewForm.querySelectorAll('input[name="reviewVerdict"]');
+            radios.forEach((radio) => {
+                radio.checked = radio.value === item.verdict;
+            });
+            reviewComment.value = item.reviewComment || '';
+
+            feedbackPreview.innerHTML = `
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <p class="text-xs text-slate-400">判定结果将写入</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900">审计日志 / 案件状态 / 知识共享池</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <p class="text-xs text-slate-400">结构化字段</p>
+                    <p class="mt-2 text-sm font-semibold text-slate-900">案件ID、结论、意见、操作人、IP、时间</p>
+                </div>
+            `;
+        }
+
+        function render() {
+            const state = store.loadState();
+            buildFilters(state);
+            renderTable(state);
+            renderDetail(state);
+        }
+
+        function persistReview(verdict, comment, actionLabel) {
+            if (!selectedCaseId) {
+                return;
+            }
+            store.updateState((state) => {
+                const item = state.cases.find((entry) => entry.id === selectedCaseId);
+                if (!item) {
+                    return state;
+                }
+                item.verdict = verdict;
+                item.reviewComment = comment;
+                item.status = verdict === '欺诈' || verdict === '误报' ? '已完成' : '处理中';
+                item.recommendedAction = verdict === '欺诈' ? '已拦截' : verdict;
+                item.needsArbitration = verdict === '需补充';
+                store.pushAuditLog(state, {
+                    module: '案件审理',
+                    action: actionLabel,
+                    target: item.id,
+                    detail: `${verdict} · ${comment}`
+                });
+                if (verdict !== '欺诈' || state.strategy.rlhfEnabled) {
+                    store.pushKnowledgeEntry(state, {
+                        title: `${item.id} · ${verdict}`,
+                        summary: comment || `来自 ${item.id} 的人工复核反馈，用于后续策略优化。`
+                    });
+                }
+                return state;
+            });
+            render();
+        }
+
+        toggleAdvanced.addEventListener('click', () => {
+            advancedFilters.classList.toggle('hidden');
+        });
+
+        resetFilters.addEventListener('click', () => {
+            searchInput.value = '';
+            riskFilter.value = 'all';
+            statusFilter.value = 'all';
+            regionFilter.value = 'all';
+            verdictFilter.value = 'all';
+            arbitrationFilter.value = 'all';
+            render();
+        });
+
+        [searchInput, riskFilter, statusFilter, regionFilter, verdictFilter, arbitrationFilter].forEach((element) => {
+            element.addEventListener('input', render);
+            element.addEventListener('change', render);
+        });
+
+        reviewForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const verdict = reviewForm.querySelector('input[name="reviewVerdict"]:checked')?.value;
+            const comment = reviewComment.value.trim();
+            if (!verdict || !comment) {
+                window.alert('请选择判定结果，并填写复核意见。');
+                return;
+            }
+            persistReview(verdict, comment, 'Review');
+            window.alert('复核结果已写入案件、审计日志和知识共享池。');
+        });
+
+        document.getElementById('markFalsePositive').addEventListener('click', () => {
+            reviewForm.querySelector('input[value="误报"]').checked = true;
+            if (!reviewComment.value.trim()) {
+                reviewComment.value = '人工确认该案件为误报，建议回收相关规则特征。';
+            }
+        });
+
+        document.getElementById('manualReviewButton').addEventListener('click', () => {
+            if (!selectedCaseId) {
+                return;
+            }
+            store.updateState((state) => {
+                const item = state.cases.find((entry) => entry.id === selectedCaseId);
+                if (item) {
+                    item.status = '处理中';
+                    item.needsArbitration = true;
+                    store.pushAuditLog(state, {
+                        module: '案件审理',
+                        action: 'Escalate',
+                        target: item.id,
+                        detail: '转人工二审'
+                    });
+                }
+                return state;
+            });
+            render();
+        });
+
+        document.getElementById('banCaseButton').addEventListener('click', () => {
+            reviewForm.querySelector('input[value="欺诈"]').checked = true;
+            if (!reviewComment.value.trim()) {
+                reviewComment.value = '确认欺诈，执行封禁并同步存证中心。';
+            }
+        });
+
+        render();
+    </script>
+</body>
+</html>

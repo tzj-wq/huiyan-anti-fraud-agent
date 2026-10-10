@@ -1,0 +1,536 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>慧眼识诈 - 风险监控中心</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/echarts.min.5.4.3.js"></script>
+<script src="app-state.js"></script>
+<style>
+        :root {
+            --brand: #1e40af;
+            --brand-soft: #dbeafe;
+        }
+
+        body {
+            font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(30, 64, 175, 0.08), transparent 28%),
+                linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.84);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 1.25rem;
+            box-shadow: 0 16px 40px -24px rgba(15, 23, 42, 0.28);
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 320px;
+        }
+
+        .alert-item {
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+
+        .alert-item:hover,
+        .alert-item:focus-visible {
+            transform: translateX(4px);
+            background-color: rgba(15, 23, 42, 0.18);
+            outline: none;
+        }
+
+        .focus-ring:focus-visible {
+            outline: 3px solid rgba(30, 64, 175, 0.25);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-900 lg:flex">
+<aside class="w-full bg-slate-950 text-slate-300 lg:h-screen lg:w-64 lg:shrink-0">
+<div class="flex items-center gap-3 border-b border-slate-800 px-6 py-5">
+<div class="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-700 text-white shadow-lg shadow-blue-900/30">
+<iconify-icon icon="mdi:shield-search" width="24"></iconify-icon>
+</div>
+<div>
+<p class="text-lg font-bold tracking-tight text-white">慧眼识诈</p>
+<p class="text-xs text-slate-400">金融交易反欺诈多智能体协同检测系统</p>
+</div>
+</div>
+<nav class="space-y-1 px-4 py-5">
+<a class="flex items-center gap-3 rounded-xl bg-blue-700 px-4 py-3 text-white" href="index.html">
+<iconify-icon icon="mdi:view-dashboard" width="20"></iconify-icon>
+<span class="font-medium">风险监控中心</span>
+</a>
+<a class="flex items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-slate-800" href="cases.html">
+<iconify-icon icon="mdi:alert-decagram" width="20"></iconify-icon>
+<span>案件审理处置</span>
+</a>
+<a class="flex items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-slate-800" href="strategy.html">
+<iconify-icon icon="mdi:graph-outline" width="20"></iconify-icon>
+<span>策略配置中心</span>
+</a>
+<a class="flex items-center gap-3 rounded-xl px-4 py-3 transition hover:bg-slate-800" href="data.html">
+<iconify-icon icon="mdi:database-settings" width="20"></iconify-icon>
+<span>基础数据管理</span>
+</a>
+</nav>
+<div class="px-4 pb-5">
+<div class="rounded-2xl border border-slate-800 bg-slate-900 p-4">
+<div class="mb-2 flex items-center justify-between">
+<span class="text-xs font-semibold text-slate-200">系统运行状态</span>
+<span class="flex h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
+</div>
+<div class="space-y-1 text-[11px] text-slate-400" id="systemMeta"></div>
+</div>
+</div>
+</aside>
+<main class="flex min-h-screen flex-1 flex-col lg:h-screen">
+<header class="border-b border-slate-200 bg-white/75 px-5 py-4 backdrop-blur lg:px-8">
+<div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+<div class="flex items-center gap-3">
+<div>
+<h1 class="text-2xl font-bold text-slate-900">实时风险看板</h1>
+<p class="text-sm text-slate-500">支持准实时 3 秒刷新、透明化推理链路和人工复核入口</p>
+</div>
+<span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-blue-700">LIVE</span>
+</div>
+<div class="flex flex-wrap items-center gap-4">
+<div class="rounded-2xl border border-slate-200 bg-white px-4 py-2">
+<p class="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">Current Time</p>
+<div class="mt-1 flex items-center gap-2 text-sm text-slate-600">
+<iconify-icon icon="mdi:clock-outline" width="18"></iconify-icon>
+<span id="liveClock">--</span>
+</div>
+</div>
+<div class="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-2">
+<div class="text-right">
+<p class="text-sm font-semibold text-slate-800" id="userName">系统管理员</p>
+<p class="text-xs text-slate-500" id="userRole">Easy组 负责人</p>
+</div>
+<div class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+<iconify-icon icon="mdi:account-circle" width="26"></iconify-icon>
+</div>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto px-5 py-6 lg:px-8">
+<div class="space-y-6">
+<section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4" id="kpiGrid"></section>
+<section class="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(340px,1fr)]">
+<div class="glass-card p-5 lg:p-6">
+<div class="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+<div>
+<h2 class="flex items-center gap-2 text-lg font-bold text-slate-900">
+<iconify-icon class="text-blue-700" icon="mdi:map-marker-radius"></iconify-icon>
+<span>实时风险地域热力</span>
+</h2>
+<p class="mt-1 text-sm text-slate-500">展示高危区域聚集度、活跃案件分布与模型同步状态</p>
+</div>
+<div class="flex items-center gap-2 rounded-xl bg-slate-100 p-1" id="windowSwitcher">
+<button aria-pressed="true" class="focus-ring rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-blue-700 shadow-sm" data-window="1h" type="button">近1小时</button>
+<button aria-pressed="false" class="focus-ring rounded-lg px-3 py-1.5 text-xs font-bold text-slate-500" data-window="24h" type="button">近24小时</button>
+</div>
+</div>
+<div class="chart-container" id="regionChart" role="img" aria-label="风险地域热力图"></div>
+<div class="mt-5 grid gap-3 border-t border-slate-100 pt-4 md:grid-cols-3" id="regionSummary"></div>
+</div>
+<div class="space-y-6">
+<div class="glass-card p-5 lg:p-6">
+<div class="mb-4 flex items-center justify-between">
+<h2 class="flex items-center gap-2 text-lg font-bold text-slate-900">
+<iconify-icon class="text-orange-500" icon="mdi:chart-donut"></iconify-icon>
+<span>欺诈类型构成</span>
+</h2>
+<span class="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold text-slate-500">自动聚合</span>
+</div>
+<div class="chart-container !h-[280px]" id="pieChart" role="img" aria-label="欺诈类型构成图"></div>
+</div>
+<div class="rounded-[1.4rem] bg-slate-950 p-5 text-white shadow-2xl shadow-slate-900/20 lg:p-6">
+<div class="mb-4 flex items-center justify-between">
+<div>
+<h2 class="flex items-center gap-2 text-lg font-bold">
+<iconify-icon class="text-yellow-400" icon="mdi:flash-outline"></iconify-icon>
+<span>实时告警流</span>
+</h2>
+<p class="mt-1 text-sm text-slate-400">点击任一告警可跳转到案件审理详情</p>
+</div>
+<span class="rounded-full bg-slate-800 px-3 py-1 text-[11px] font-semibold text-slate-300">3 秒刷新</span>
+</div>
+<div class="space-y-3" id="alertList"></div>
+<a class="focus-ring mt-4 inline-flex w-full items-center justify-center rounded-xl bg-slate-800 px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700" href="cases.html">查看全部告警</a>
+</div>
+</div>
+</section>
+<section class="grid gap-6 xl:grid-cols-[minmax(0,1.45fr)_minmax(360px,1fr)]">
+<div class="glass-card p-5 lg:p-6">
+<div class="mb-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+<div>
+<h2 class="flex items-center gap-2 text-lg font-bold text-slate-900">
+<iconify-icon class="text-violet-600" icon="mdi:robot-outline"></iconify-icon>
+<span>Multi-Agent 协同引擎状态</span>
+</h2>
+<p class="mt-1 text-sm text-slate-500">Agent 权重来自策略配置中心，状态与压测结论跨页面同步</p>
+</div>
+<div class="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm text-emerald-700" id="engineStatus"></div>
+</div>
+<div class="grid gap-4 md:grid-cols-2 2xl:grid-cols-5" id="agentGrid"></div>
+</div>
+<div class="glass-card p-5 lg:p-6">
+<div class="mb-4 flex items-center justify-between">
+<div>
+<h2 class="text-lg font-bold text-slate-900">处置建议</h2>
+<p class="mt-1 text-sm text-slate-500">基于当前阈值和案件一致性，提示需要人工仲裁的风险点</p>
+</div>
+<a class="text-sm font-semibold text-blue-700 hover:underline" href="strategy.html">前往策略配置</a>
+</div>
+<div class="space-y-4" id="decisionFeed"></div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<script>
+        const { loadState, formatNumber, formatPercent, getSeverityTone, getStatusTone } = window.PlatformStore;
+
+        const regionChart = echarts.init(document.getElementById('regionChart'));
+        const pieChart = echarts.init(document.getElementById('pieChart'));
+        const liveClock = document.getElementById('liveClock');
+        const windowSwitcher = document.getElementById('windowSwitcher');
+
+        let tick = 0;
+        let selectedWindow = loadState().dashboard.timeWindow || '1h';
+
+        function computeSnapshot(state) {
+            const openCases = state.cases.filter((item) => item.status !== '已完成');
+            const blockedCases = state.cases.filter((item) => item.verdict === '欺诈' || item.status === '已完成').length;
+            const arbitrationCases = state.cases.filter((item) => item.consensus < state.strategy.threshold).length;
+
+            return {
+                transactions: state.dashboard.transactionsBase + tick * 37 + openCases.length * 12,
+                transactionDelta: state.dashboard.transactionDelta + (tick % 3) * 0.2,
+                blockedCases: 4281 + blockedCases * 9,
+                blockedDelta: 8.2 + arbitrationCases * 0.1,
+                tpr: state.dashboard.tpr + (state.strategy.rlhfEnabled ? 0.18 : 0),
+                p99: Math.max(0.98, state.dashboard.p99 + (tick % 2 === 0 ? 0.03 : -0.02) + arbitrationCases * 0.01)
+            };
+        }
+
+        function renderMeta(state) {
+            document.getElementById('systemMeta').innerHTML = `
+                <p>系统版本: ${state.meta.systemVersion}</p>
+                <p>课题编号: ${state.meta.projectCode}</p>
+                <p>最后同步: ${state.meta.updatedAt}</p>
+            `;
+            document.getElementById('userName').textContent = state.meta.userName;
+            document.getElementById('userRole').textContent = state.meta.userRole;
+        }
+
+        function renderKpis(state) {
+            const snapshot = computeSnapshot(state);
+            const cards = [
+                {
+                    label: '今日交易总量',
+                    value: formatNumber(snapshot.transactions),
+                    meta: `<span class="inline-flex items-center gap-1 text-blue-700"><iconify-icon icon="mdi:trending-up"></iconify-icon>${formatPercent(snapshot.transactionDelta, 1)}</span>`,
+                    border: 'border-blue-600'
+                },
+                {
+                    label: '拦截欺诈案件',
+                    value: formatNumber(snapshot.blockedCases),
+                    meta: `<span class="inline-flex items-center gap-1 text-red-600"><iconify-icon icon="mdi:alert-circle-outline"></iconify-icon>${formatPercent(snapshot.blockedDelta, 1)}</span>`,
+                    border: 'border-red-600'
+                },
+                {
+                    label: '核心检出率 (TPR)',
+                    value: formatPercent(snapshot.tpr, 2),
+                    meta: '<span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">满足 ≥97% 目标</span>',
+                    border: 'border-emerald-600'
+                },
+                {
+                    label: '平均检测延迟 (P99)',
+                    value: `${snapshot.p99.toFixed(2)}s`,
+                    meta: '<span class="rounded-full bg-violet-50 px-2 py-1 text-xs font-semibold text-violet-700">准实时 3 秒刷新</span>',
+                    border: 'border-violet-600'
+                }
+            ];
+
+            document.getElementById('kpiGrid').innerHTML = cards.map((card) => `
+                <article class="glass-card border-l-4 ${card.border} p-5">
+                    <p class="text-sm font-medium text-slate-500">${card.label}</p>
+                    <div class="mt-4 flex items-end justify-between gap-3">
+                        <p class="text-3xl font-bold text-slate-900">${card.value}</p>
+                        <div class="text-xs font-bold">${card.meta}</div>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        function renderRegionChart(state) {
+            const regionData = state.dashboard.regionStats[selectedWindow];
+            regionChart.setOption({
+                animationDuration: 500,
+                grid: { left: 20, right: 16, top: 10, bottom: 10, containLabel: true },
+                tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+                xAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: '#e2e8f0' } },
+                    axisLabel: { color: '#64748b' }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: regionData.map((item) => item.city),
+                    axisLabel: { color: '#0f172a', fontWeight: 600 },
+                    axisLine: { show: false },
+                    axisTick: { show: false }
+                },
+                series: [{
+                    type: 'bar',
+                    data: regionData.map((item) => ({
+                        value: item.value,
+                        itemStyle: {
+                            color: item.level === 'critical' ? '#b91c1c' : item.level === 'high' ? '#ea580c' : '#1d4ed8',
+                            borderRadius: [0, 12, 12, 0]
+                        }
+                    })),
+                    label: {
+                        show: true,
+                        position: 'right',
+                        color: '#334155'
+                    }
+                }]
+            });
+
+            const activeAgents = state.strategy.agents.filter((agent) => agent.active).length + 1;
+            const modelVersion = state.strategy.versions.find((version) => version.status === 'active')?.id || state.meta.systemVersion;
+            const topCities = regionData.slice(0, 3).map((item) => item.city).join('、');
+
+            document.getElementById('regionSummary').innerHTML = `
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <p class="text-xs text-slate-400">高危城市</p>
+                    <p class="mt-2 text-base font-bold text-slate-900">${topCities}</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <p class="text-xs text-slate-400">活跃 Agent 数</p>
+                    <p class="mt-2 text-base font-bold text-slate-900">${activeAgents} 个</p>
+                </div>
+                <div class="rounded-2xl bg-slate-50 p-4">
+                    <p class="text-xs text-slate-400">模型更新状态</p>
+                    <p class="mt-2 text-base font-bold text-emerald-600">${modelVersion} 已同步</p>
+                </div>
+            `;
+        }
+
+        function renderPieChart(state) {
+            pieChart.setOption({
+                animationDuration: 500,
+                tooltip: { trigger: 'item' },
+                legend: {
+                    bottom: 0,
+                    icon: 'circle',
+                    textStyle: { color: '#475569', fontSize: 11 }
+                },
+                series: [{
+                    type: 'pie',
+                    radius: ['42%', '70%'],
+                    center: ['50%', '46%'],
+                    label: { formatter: '{b}\n{d}%', color: '#334155', fontSize: 11 },
+                    itemStyle: {
+                        borderColor: '#fff',
+                        borderWidth: 3,
+                        borderRadius: 12
+                    },
+                    data: state.dashboard.fraudComposition.map((item, index) => ({
+                        ...item,
+                        itemStyle: {
+                            color: ['#1d4ed8', '#ea580c', '#7c3aed', '#0f766e', '#b91c1c'][index]
+                        }
+                    }))
+                }]
+            });
+        }
+
+        function renderAlerts(state) {
+            const items = state.cases
+                .slice()
+                .sort((a, b) => b.riskScore - a.riskScore)
+                .slice(0, 4);
+
+            document.getElementById('alertList').innerHTML = items.map((item) => {
+                const tone = getSeverityTone(item.severity);
+                const statusTone = getStatusTone(item.status);
+                return `
+                    <button class="alert-item focus-ring flex w-full items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-left" data-case-id="${item.id}" type="button">
+                        <span class="mt-1 h-2.5 w-2.5 shrink-0 rounded-full ${tone.dot}"></span>
+                        <div class="flex-1">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <p class="text-sm font-bold text-white">${item.fraudType}</p>
+                                <span class="rounded-full ${tone.badge} px-2 py-0.5 text-[10px] font-bold">${item.riskScore}/100</span>
+                            </div>
+                            <p class="mt-1 text-xs text-slate-400">${item.id} · ${item.time}</p>
+                            <p class="mt-2 text-sm text-slate-200">${item.accountName}（${item.phone}）在 ${item.region} 触发 ${item.features[0]}，建议 ${item.recommendedAction}。</p>
+                        </div>
+                        <span class="rounded-full ${statusTone.badge} px-2 py-0.5 text-[10px] font-bold">${statusTone.label}</span>
+                    </button>
+                `;
+            }).join('');
+
+            document.querySelectorAll('[data-case-id]').forEach((button) => {
+                button.addEventListener('click', () => {
+                    window.location.href = `cases.html?case=${button.dataset.caseId}`;
+                });
+            });
+        }
+
+        function renderAgents(state) {
+            const activeAgents = state.strategy.agents.filter((agent) => agent.active).length;
+            document.getElementById('engineStatus').textContent = `AutoGen v2.4 运行中 · ${activeAgents}/4 个核心 Agent 在线`;
+
+            const agentCards = state.strategy.agents.map((agent) => {
+                const usage = Math.min(100, Math.round(agent.weight * 2.5 + agent.latency / 20));
+                const statusText = agent.latency > 700 ? '高载' : agent.active ? '健康' : '停用';
+                const statusClass = !agent.active ? 'bg-slate-100 text-slate-600' : agent.latency > 700 ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700';
+
+                return `
+                    <article class="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+                        <div class="mb-3 flex items-start justify-between gap-3">
+                            <div>
+                                <p class="text-sm font-bold text-slate-800">${agent.name}</p>
+                                <p class="mt-1 text-xs text-slate-400">权重 ${agent.weight}% · ${agent.priority}</p>
+                            </div>
+                            <span class="rounded-full ${statusClass} px-2 py-0.5 text-[10px] font-bold">${statusText}</span>
+                        </div>
+                        <p class="text-xs leading-5 text-slate-500">${agent.prompt}</p>
+                        <div class="mt-4 flex items-center justify-between text-xs text-slate-400">
+                            <span>延迟 ${agent.latency}ms</span>
+                            <span>${agent.active ? '已启用' : '已停用'}</span>
+                        </div>
+                        <div class="mt-2 h-2 overflow-hidden rounded-full bg-slate-200">
+                            <div class="h-full rounded-full" style="width:${usage}%;background:${agent.color};"></div>
+                        </div>
+                    </article>
+                `;
+            });
+
+            const coordinator = `
+                <article class="rounded-2xl border border-blue-200 bg-blue-50 p-4">
+                    <div class="mb-3 flex items-start justify-between gap-3">
+                        <div>
+                            <p class="text-sm font-bold text-blue-800">决策审批 Agent</p>
+                            <p class="mt-1 text-xs text-blue-500">Final Decision</p>
+                        </div>
+                        <span class="rounded-full bg-blue-100 px-2 py-0.5 text-[10px] font-bold text-blue-700">主控</span>
+                    </div>
+                    <p class="text-xs leading-5 text-slate-600">负责聚合置信度、判断是否触发人工仲裁，并将最终结论写入存证中心。</p>
+                    <div class="mt-4 flex items-center justify-between text-xs text-slate-500">
+                        <span>仲裁阈值 ${state.strategy.threshold}%</span>
+                        <span>最大深度 ${state.strategy.maxDepth} 步</span>
+                    </div>
+                    <div class="mt-2 h-2 overflow-hidden rounded-full bg-blue-100">
+                        <div class="h-full w-[78%] rounded-full bg-blue-700"></div>
+                    </div>
+                </article>
+            `;
+
+            document.getElementById('agentGrid').innerHTML = `${agentCards.join('')}${coordinator}`;
+        }
+
+        function renderDecisionFeed(state) {
+            const threshold = state.strategy.threshold;
+            const candidates = state.cases
+                .filter((item) => item.consensus < threshold || item.status !== '已完成')
+                .slice(0, 4);
+
+            document.getElementById('decisionFeed').innerHTML = candidates.map((item) => {
+                const needsArbitration = item.consensus < threshold;
+                return `
+                    <article class="rounded-2xl border ${needsArbitration ? 'border-amber-200 bg-amber-50' : 'border-slate-200 bg-slate-50'} p-4">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <p class="text-sm font-bold text-slate-900">${item.id} · ${item.accountName}</p>
+                                <p class="mt-1 text-xs text-slate-500">${item.fraudType} · 决策共识度 ${item.consensus}% · 建议 ${item.recommendedAction}</p>
+                            </div>
+                            <span class="rounded-full ${needsArbitration ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'} px-2 py-0.5 text-[10px] font-bold">
+                                ${needsArbitration ? '需人工仲裁' : '可自动处置'}
+                            </span>
+                        </div>
+                        <p class="mt-3 text-sm leading-6 text-slate-600">${needsArbitration ? '该案件一致性低于当前仲裁阈值，需人工在案件审理页补充判定。' : '该案件满足自动处置条件，可在案件页确认拦截并入库。'}</p>
+                        <a class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:underline" href="cases.html?case=${item.id}">
+                            查看证据链
+                            <iconify-icon icon="mdi:arrow-right" width="16"></iconify-icon>
+                        </a>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        function renderWindowButtons() {
+            Array.from(windowSwitcher.querySelectorAll('button')).forEach((button) => {
+                const active = button.dataset.window === selectedWindow;
+                button.className = active
+                    ? 'focus-ring rounded-lg bg-white px-3 py-1.5 text-xs font-bold text-blue-700 shadow-sm'
+                    : 'focus-ring rounded-lg px-3 py-1.5 text-xs font-bold text-slate-500';
+                button.setAttribute('aria-pressed', String(active));
+            });
+        }
+
+        function render() {
+            const state = loadState();
+            renderMeta(state);
+            renderKpis(state);
+            renderWindowButtons();
+            renderRegionChart(state);
+            renderPieChart(state);
+            renderAlerts(state);
+            renderAgents(state);
+            renderDecisionFeed(state);
+        }
+
+        function updateClock() {
+            liveClock.textContent = new Date().toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false
+            }).replace(/\//g, '-');
+        }
+
+        windowSwitcher.addEventListener('click', (event) => {
+            const button = event.target.closest('button[data-window]');
+            if (!button) {
+                return;
+            }
+            selectedWindow = button.dataset.window;
+            window.PlatformStore.updateState((state) => {
+                state.dashboard.timeWindow = selectedWindow;
+                return state;
+            });
+            render();
+        });
+
+        updateClock();
+        render();
+
+        setInterval(() => {
+            tick += 1;
+            render();
+        }, 3000);
+
+        setInterval(updateClock, 1000);
+
+        window.addEventListener('resize', () => {
+            regionChart.resize();
+            pieChart.resize();
+        });
+    </script>
+</body>
+</html>

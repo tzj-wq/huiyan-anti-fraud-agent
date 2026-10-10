@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>申诉解封 - 慧眼识诈</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+<style>
+        @font-face {
+            font-family: 'Inter';
+            src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: #f8fafc; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); }
+        .timeline-line::before { content: ''; position: absolute; left: 19px; top: 0; bottom: 0; width: 2px; background: #e2e8f0; }
+    </style>
+</head>
+<body class="text-slate-800">
+<!-- 顶部导航 -->
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center space-x-3">
+<a class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center shadow-lg" href="index.html">
+<iconify-icon class="text-white text-2xl" icon="mdi:shield-check"></iconify-icon>
+</a>
+<div>
+<h1 class="text-xl font-bold text-slate-900 tracking-tight">申诉处理中心</h1>
+<p class="text-xs text-slate-500">AI 初审与人工复核全流程可追踪</p>
+</div>
+</div>
+<div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="index.html">
+<iconify-icon icon="mdi:home-outline"></iconify-icon><span>安全首页</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="security.html">
+<iconify-icon icon="mdi:lock-outline"></iconify-icon><span>安全中心</span>
+</a>
+<a class="text-blue-600 flex items-center space-x-1 border-b-2 border-blue-600 pb-1" href="appeals.html">
+<iconify-icon icon="mdi:file-document-edit"></iconify-icon><span>申诉解封</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="report.html">
+<iconify-icon icon="mdi:alert-octagon-outline"></iconify-icon><span>举报查询</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="education.html">
+<iconify-icon icon="mdi:school-outline"></iconify-icon><span>风险教育</span>
+</a>
+</div>
+<div class="flex items-center space-x-4">
+<div class="text-right">
+<p class="text-xs font-bold text-blue-600">待处理申诉: 1</p>
+<p class="text-[10px] text-slate-400">平均响应: 15 分钟内</p>
+</div>
+<div class="flex items-center space-x-2 border-l pl-4 border-slate-200">
+<div class="text-right">
+<p class="text-sm font-semibold">张*强</p>
+<p class="text-[10px] text-slate-400">UID: 8219401</p>
+</div>
+<img alt="User Avatar" class="w-8 h-8 rounded-full bg-slate-200" src="https://modao.cc/agent-py/media/generated_images/2026-04-14/e4ecf88005084918ae56305d108595fc.jpg"/>
+</div>
+</div>
+</nav>
+<main class="max-w-[1440px] mx-auto p-8 grid grid-cols-12 gap-8">
+<!-- 左侧：拦截历史 -->
+<div class="col-span-12 lg:col-span-7 space-y-6">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-bold text-slate-800">近期异常拦截记录</h3>
+<div class="flex space-x-2">
+<span class="px-2 py-1 bg-amber-50 text-amber-600 text-[10px] rounded border border-amber-100">有待处理申诉</span>
+</div>
+</div>
+<div class="p-0">
+<!-- 拦截卡片 1 -->
+<div class="p-6 border-b border-slate-50 bg-amber-50/30">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+<iconify-icon class="text-red-600 text-2xl" icon="mdi:bank-transfer-off"></iconify-icon>
+</div>
+<div>
+<h4 class="font-bold text-slate-900">转账被拦截：￥1,240,000.00</h4>
+<p class="text-xs text-slate-500">交易流水：TX-928410294 • 2026-04-14 10:24:12</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-red-100 text-red-600 text-xs rounded-full font-bold">已拦截</span>
+</div>
+<div class="bg-white rounded-xl border border-amber-100 p-4 mb-4">
+<h5 class="text-[11px] font-bold text-amber-700 uppercase tracking-widest mb-3 flex items-center">
+<iconify-icon class="mr-1" icon="mdi:auto-fix"></iconify-icon> AI 决策依据（透明化告知）
+                            </h5>
+<div class="space-y-3">
+<div class="flex items-start space-x-2">
+<iconify-icon class="text-green-500 mt-0.5 text-xs" icon="mdi:check-circle"></iconify-icon>
+<p class="text-xs text-slate-600"><span class="font-bold">黑名单匹配：</span>收款方账户命中 CMARC-2026 风险标识。</p>
+</div>
+<div class="flex items-start space-x-2">
+<iconify-icon class="text-green-500 mt-0.5 text-xs" icon="mdi:check-circle"></iconify-icon>
+<p class="text-xs text-slate-600"><span class="font-bold">行为模式：</span>该笔交易的操作路径呈现“脚本自动化”特征，点击间隔极短。</p>
+</div>
+<div class="flex items-start space-x-2">
+<iconify-icon class="text-amber-500 mt-0.5 text-xs" icon="mdi:alert-circle"></iconify-icon>
+<p class="text-xs text-slate-600"><span class="font-bold">资金图谱：</span>资金去向账户与多个洗钱集群存在关联。</p>
+</div>
+</div>
+</div>
+<div class="flex justify-end space-x-3">
+<button class="px-4 py-2 bg-slate-100 text-slate-600 text-xs font-bold rounded-lg">我确认此笔风险</button>
+<button class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg shadow-md shadow-blue-100">不是我本人 / 发起申诉</button>
+</div>
+</div>
+<!-- 历史记录 2 -->
+<div class="p-6 border-b border-slate-50 opacity-60">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center space-x-3">
+<div class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+<iconify-icon class="text-slate-500 text-2xl" icon="mdi:login-variant"></iconify-icon>
+</div>
+<div>
+<h4 class="font-bold text-slate-900">异地登录验证拦截</h4>
+<p class="text-xs text-slate-500">来源：新西兰-奥克兰 • 2026-04-12 22:15:33</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs rounded-full font-bold">已通过二次核验</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 右侧：申诉进度与指引 -->
+<div class="col-span-12 lg:col-span-5 space-y-6">
+<div class="bg-blue-600 rounded-2xl p-6 text-white shadow-xl shadow-blue-200">
+<h3 class="font-bold text-lg mb-4 flex items-center">
+<iconify-icon class="mr-2" icon="mdi:information-outline"></iconify-icon> 申诉需知
+                </h3>
+<ul class="text-xs space-y-4 text-blue-100 leading-relaxed">
+<li class="flex items-start">
+<span class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-[10px] mr-2 mt-0.5 shrink-0">1</span>
+<span>申诉通常在 15 分钟内由“人工 + AI 初审”完成，部分复杂情况需 1-2 个工作日。</span>
+</li>
+<li class="flex items-start">
+<span class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-[10px] mr-2 mt-0.5 shrink-0">2</span>
+<span>准备好您的有效身份证件及该笔交易的真实背景凭证（如合同、聊天记录）。</span>
+</li>
+<li class="flex items-start">
+<span class="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-[10px] mr-2 mt-0.5 shrink-0">3</span>
+<span>恶意提交虚假申诉将导致账户信用分降低，甚至面临法律追责。</span>
+</li>
+</ul>
+</div>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+<h3 class="font-bold text-slate-800 mb-6">进行中的申诉 (1)</h3>
+<div class="relative timeline-line pl-10 space-y-8">
+<div class="relative">
+<div class="absolute -left-10 w-10 h-10 bg-green-500 text-white rounded-full flex items-center justify-center z-10">
+<iconify-icon icon="mdi:check"></iconify-icon>
+</div>
+<div>
+<p class="text-sm font-bold">提交申诉</p>
+<p class="text-[11px] text-slate-500">2026-04-14 10:30:15</p>
+<p class="text-xs text-slate-600 mt-1">申诉号：APP-1029314，已收到您的申请资料。</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-10 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center z-10 animate-pulse">
+<iconify-icon icon="mdi:robot"></iconify-icon>
+</div>
+<div>
+<p class="text-sm font-bold">AI 自动化初审中</p>
+<p class="text-[11px] text-slate-500">预计等待: &lt; 1 分钟</p>
+<p class="text-xs text-slate-600 mt-1">Multi-Agent 正在对比历史合法交易模型与本次凭证真实性。</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-10 w-10 h-10 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center z-10 border-2 border-white">
+<iconify-icon icon="mdi:account-tie"></iconify-icon>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-400">人工复核 (如有需)</p>
+<p class="text-xs text-slate-400 mt-1">等待前置环节完成...</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 py-3 bg-slate-50 border border-slate-200 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-100 transition-all">补充申诉材料</button>
+</div>
+</div>
+</main>
+<footer class="bg-slate-900 text-slate-400 py-8 mt-12">
+<div class="max-w-[1440px] mx-auto px-8 text-center text-[10px]">
+            © 2026 慧眼识诈 - 金融级个人反诈安全系统 版权所有. 课题编号: SE2026-13
+        </div>
+</footer>
+</body>
+</html>

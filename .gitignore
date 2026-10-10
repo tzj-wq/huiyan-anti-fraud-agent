@@ -1,0 +1,23 @@
+.env
+*.db
+*.sqlite
+__pycache__/
+.pytest_cache/
+.venv/
+.vscode/
+.idea/
+.claude/
+
+node_modules/
+dist/
+
+~$*.docx
+
+# 课程/个人文档（仅根目录，本地保留不入库）
+/*.pdf
+/*.docx
+/*.pptx
+
+# 本地临时文件
+template_dump.txt
+backend/_resume_*

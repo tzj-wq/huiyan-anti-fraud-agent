@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>慧眼识诈 - 个人用户安全门户</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Iconify -->
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+    <style>
+        body{
+            font-family: Inter, system-ui, sans-serif;
+            background:#f8fafc;
+        }
+
+        .gradient-bg{
+            background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 100%);
+        }
+
+        .card-hover:hover{
+            transform:translateY(-2px);
+            transition:all .3s ease;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800">
+
+<!-- 顶部导航 -->
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm">
+
+    <div class="flex items-center space-x-3">
+
+        <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center shadow-lg">
+            <iconify-icon icon="mdi:shield-check" class="text-white text-2xl"></iconify-icon>
+        </div>
+
+        <div>
+            <h1 class="text-xl font-bold text-slate-900">
+                慧眼识诈
+                <span class="text-blue-600">C端用户版</span>
+            </h1>
+
+            <p class="text-xs text-slate-500">
+                AutoGen V2.4 智能体集群守护中
+            </p>
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- 主体 -->
+<main class="max-w-[1400px] mx-auto p-8">
+
+    <!-- 安全评分 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- 左侧 -->
+        <div class="space-y-6">
+
+            <!-- 仪表盘 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">账户安全评分</h3>
+
+                    <iconify-icon
+                            icon="mdi:shield-check"
+                            class="text-blue-500 text-xl">
+                    </iconify-icon>
+                </div>
+
+                <div id="scoreGauge" class="w-full h-56"></div>
+
+                <div class="text-center">
+                    <p class="text-slate-500 text-sm">
+                        更新时间：2026-04-14 10:24:55
+                    </p>
+
+                    <div class="mt-4 flex justify-center gap-2">
+                        <span class="px-3 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+                            状态：极度安全
+                        </span>
+
+                        <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
+                            AI全时监控
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 紧急防御 -->
+            <div class="bg-red-50 rounded-2xl border border-red-100 p-6">
+
+                <div class="flex items-center gap-2 text-red-700 mb-4">
+                    <iconify-icon icon="mdi:alert-decagram" class="text-2xl"></iconify-icon>
+                    <h3 class="font-bold">紧急防御中心</h3>
+                </div>
+
+                <p class="text-sm text-red-600 leading-relaxed mb-6">
+                    如发现异常登录、手机丢失或账户风险，可立即冻结权限。
+                </p>
+
+                <div class="grid grid-cols-2 gap-3">
+
+                    <button
+                            onclick="window.open('https://www.12381.cn/')"
+                            class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl">
+
+                        一键锁号
+                    </button>
+
+                    <button
+                            onclick="window.open('https://www.12381.cn/')"
+                            class="bg-white border border-red-200 text-red-600 font-bold py-3 rounded-xl hover:bg-red-50">
+
+                        快速挂失
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- 右侧 -->
+        <div class="lg:col-span-2 space-y-6">
+
+            <!-- 风险趋势 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+
+                <div class="flex items-center justify-between mb-6">
+
+                    <div>
+                        <h2 class="text-xl font-bold">
+                            全域风险态势感知
+                        </h2>
+
+                        <p class="text-sm text-slate-500">
+                            AI 智能风控引擎实时分析中
+                        </p>
+                    </div>
+
+                </div>
+
+                <div id="riskTrend" class="w-full h-80"></div>
+
+            </div>
+
+            <!-- 功能卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+                <!-- MFA -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 card-hover">
+
+                    <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center mb-4">
+                        <iconify-icon icon="mdi:fingerprint" class="text-2xl text-indigo-600"></iconify-icon>
+                    </div>
+
+                    <h3 class="font-bold mb-2">
+                        MFA 身份核验
+                    </h3>
+
+                    <p class="text-xs text-slate-500 mb-4">
+                        管理动态口令与生物识别
+                    </p>
+
+                    <button
+                            onclick="window.open('https://www.12381.cn/')"
+                            class="text-indigo-600 text-xs font-bold hover:underline">
+
+                        去配置 →
+                    </button>
+
+                </div>
+
+                <!-- 授权 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 card-hover">
+
+                    <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
+                        <iconify-icon icon="mdi:account-key" class="text-2xl text-blue-600"></iconify-icon>
+                    </div>
+
+                    <h3 class="font-bold mb-2">
+                        授权隐私控制
+                    </h3>
+
+                    <p class="text-xs text-slate-500 mb-4">
+                        清理第三方授权应用
+                    </p>
+
+                    <button
+                            onclick="window.open('https://www.12381.cn/')"
+                            class="text-blue-600 text-xs font-bold hover:underline">
+
+                        管理 →
+                    </button>
+
+                </div>
+
+                <!-- 举报 -->
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 card-hover">
+
+                    <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center mb-4">
+                        <iconify-icon icon="mdi:trophy-outline" class="text-2xl text-amber-600"></iconify-icon>
+                    </div>
+
+                    <h3 class="font-bold mb-2">
+                        举报与奖励
+                    </h3>
+
+                    <p class="text-xs text-slate-500 mb-4">
+                        举报诈骗获取奖励
+                    </p>
+
+                    <button
+                            onclick="window.open('https://www.12381.cn/')"
+                            class="text-amber-600 text-xs font-bold hover:underline">
+
+                        我要举报 →
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- 最新安全预警 -->
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+
+                    <h3 class="font-bold text-slate-800">
+                        最新安全预警 & 教育
+                    </h3>
+
+                    <button
+                            onclick="window.open('https://www.12381.cn/')"
+                            class="text-xs text-blue-600 font-semibold hover:underline">
+
+                        查看全部
+                    </button>
+
+                </div>
+
+                <!-- 第一条 -->
+                <div
+                        onclick="window.open('https://www.12381.cn/')"
+                        style="position:relative;z-index:9999;"
+                        class="flex hover:bg-slate-50 transition-colors p-4 border-b border-slate-50 cursor-pointer">
+
+                    <img
+                            src="https://modao.cc/agent-py/media/generated_images/2026-04-14/8737db98230d4256a7abccbdbfe9ea3d.jpg"
+                            alt="安全预警"
+                            class="w-32 h-20 rounded-lg object-cover mr-4 bg-slate-100"/>
+
+                    <div class="flex-1">
+
+                        <span class="px-2 py-0.5 bg-red-100 text-red-600 text-[10px] rounded font-bold">
+                            紧急预警
+                        </span>
+
+                        <h4 class="text-sm font-bold mt-1">
+                            AI 亲情诈骗风险预警
+                        </h4>
+
+                        <p class="text-xs text-slate-500 mt-1">
+                            利用 AI 模拟亲属声音实施诈骗
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- 第二条 -->
+                <div class="flex hover:bg-slate-50 transition-colors p-4">
+
+                    <img
+                            src="https://modao.cc/agent-py/media/generated_images/2026-04-14/8737db98230d4256a7abccbdbfe9ea3d.jpg"
+                            alt="强化训练"
+                            class="w-32 h-20 rounded-lg object-cover mr-4 bg-slate-100"/>
+
+                    <div class="flex-1">
+
+                        <span class="px-2 py-0.5 bg-blue-100 text-blue-600 text-[10px] rounded font-bold">
+                            错题学习
+                        </span>
+
+                        <h4 class="text-sm font-bold mt-1">
+                            二维码诈骗识别训练
+                        </h4>
+
+                        <p class="text-xs text-slate-500 mt-1">
+                            请及时完成强化训练
+                        </p>
+
+                        <button
+                                onclick="window.open('https://www.12381.cn/')"
+                                style="position:relative;z-index:9999;"
+                                class="mt-2 text-xs text-blue-600 font-bold hover:underline">
+
+                            点击进入强化训练 →
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+
+    const gaugeChart = echarts.init(document.getElementById('scoreGauge'));
+
+    gaugeChart.setOption({
+        series: [{
+            type: 'gauge',
+            startAngle: 180,
+            endAngle: 0,
+            min: 0,
+            max: 100,
+
+            progress: {
+                show: true,
+                width: 12
+            },
+
+            axisLine: {
+                lineStyle: {
+                    width: 12
+                }
+            },
+
+            pointer: {
+                show: false
+            },
+
+            detail: {
+                fontSize: 48,
+                offsetCenter: [0, '-10%'],
+                formatter: '{value}',
+                color: '#1e293b'
+            },
+
+            data: [{
+                value: 98
+            }]
+        }]
+    });
+
+    const trendChart = echarts.init(document.getElementById('riskTrend'));
+
+    trendChart.setOption({
+
+        tooltip: {
+            trigger: 'axis'
+        },
+
+        xAxis: {
+            type: 'category',
+            data: [
+                '14:00',
+                '16:00',
+                '18:00',
+                '20:00',
+                '22:00',
+                '00:00',
+                '02:00'
+            ]
+        },
+
+        yAxis: {
+            type: 'value'
+        },
+
+        series: [{
+            data: [120, 200, 150, 260, 300, 280, 320],
+            type: 'line',
+            smooth: true,
+            areaStyle: {}
+        }]
+
+    });
+
+    window.addEventListener('resize', () => {
+        gaugeChart.resize();
+        trendChart.resize();
+    });
+
+</script>
+
+</body>
+</html>

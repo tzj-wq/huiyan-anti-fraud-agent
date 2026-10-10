@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>安全中心 - 慧眼识诈</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+<style>
+        @font-face {
+            font-family: 'Inter';
+            src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: #f8fafc; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); }
+        .card-hover:hover { transform: translateY(-2px); transition: all 0.3s ease; }
+        .switch-checkbox { position: absolute; opacity: 0; width: 0; height: 0; }
+        .switch-label {
+            position: relative;
+            display: block;
+            width: 48px;
+            height: 28px;
+            border-radius: 9999px;
+            background-color: #cbd5e1;
+            cursor: pointer;
+            transition: background-color 0.25s ease, box-shadow 0.25s ease;
+            box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.35);
+        }
+        .switch-label::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            border-radius: 9999px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18);
+            transition: transform 0.25s ease;
+        }
+        .switch-checkbox:checked + .switch-label {
+            background-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+        }
+        .switch-checkbox:checked + .switch-label::before { transform: translateX(20px); }
+        .security-tab { transition: all 0.2s ease; }
+        .security-panel { animation: fadeIn 0.25s ease; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+<!-- 顶部导航 -->
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center space-x-3">
+<a class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center shadow-lg" href="index.html">
+<iconify-icon class="text-white text-2xl" icon="mdi:shield-check"></iconify-icon>
+</a>
+<div>
+<h1 class="text-xl font-bold text-slate-900 tracking-tight">安全中心</h1>
+<p class="text-xs text-slate-500">最后一次安全评估：12 分钟前 (良好)</p>
+</div>
+</div>
+<div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="index.html">
+<iconify-icon icon="mdi:home-outline"></iconify-icon><span>安全首页</span>
+</a>
+<a class="text-blue-600 flex items-center space-x-1 border-b-2 border-blue-600 pb-1" href="security.html">
+<iconify-icon icon="mdi:lock"></iconify-icon><span>安全中心</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="appeals.html">
+<iconify-icon icon="mdi:file-document-edit-outline"></iconify-icon><span>申诉解封</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="report.html">
+<iconify-icon icon="mdi:alert-octagon-outline"></iconify-icon><span>举报查询</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="education.html">
+<iconify-icon icon="mdi:school-outline"></iconify-icon><span>风险教育</span>
+</a>
+</div>
+<div class="flex items-center space-x-4">
+<div class="text-right">
+<p class="text-xs font-bold text-blue-600">防护状态: 全量开启</p>
+<p class="text-[10px] text-slate-400">高风险策略 7 项生效中</p>
+</div>
+<button class="bg-blue-600 text-white text-xs px-4 py-2 rounded-lg font-bold hover:bg-blue-700 transition-all">安全体检</button>
+</div>
+</nav>
+<main class="max-w-[1440px] mx-auto p-8 grid grid-cols-12 gap-8">
+<!-- 左侧菜单 -->
+<aside class="col-span-12 lg:col-span-3 space-y-2">
+<div class="bg-white rounded-2xl border border-slate-100 p-2 overflow-hidden">
+<button class="security-tab w-full flex items-center space-x-3 px-4 py-3 bg-blue-50 text-blue-600 rounded-xl font-bold" data-tab="core" type="button">
+<iconify-icon class="text-xl" icon="mdi:security"></iconify-icon>
+<span>核心防护设置</span>
+</button>
+<button class="security-tab w-full flex items-center space-x-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl font-medium" data-tab="devices" type="button">
+<iconify-icon class="text-xl" icon="mdi:devices"></iconify-icon>
+<span>设备与环境管理</span>
+</button>
+<button class="security-tab w-full flex items-center space-x-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl font-medium" data-tab="mfa" type="button">
+<iconify-icon class="text-xl" icon="mdi:key-chain-variant"></iconify-icon>
+<span>MFA 认证中心</span>
+</button>
+<button class="security-tab w-full flex items-center space-x-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl font-medium" data-tab="privacy" type="button">
+<iconify-icon class="text-xl" icon="mdi:eye-off-outline"></iconify-icon>
+<span>隐私与数据脱敏</span>
+</button>
+<button class="security-tab w-full flex items-center space-x-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-xl font-medium" data-tab="logs" type="button">
+<iconify-icon class="text-xl" icon="mdi:history"></iconify-icon>
+<span>敏感操作记录</span>
+</button>
+</div>
+<div class="p-6 bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl text-white">
+<iconify-icon class="text-4xl mb-4" icon="mdi:shield-airplane"></iconify-icon>
+<h4 class="font-bold mb-2">安全飞行模式</h4>
+<p class="text-xs text-blue-100 mb-4 leading-relaxed">开启后，所有境外交易及新设备登录将需要视频人工核验。适合长期不出境用户。</p>
+<button class="w-full py-2 bg-white text-blue-600 text-xs font-bold rounded-lg">立即开启</button>
+</div>
+</aside>
+<!-- 主内容区 -->
+<div class="col-span-12 lg:col-span-9">
+<div class="security-panel space-y-6" id="panel-core">
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h2 class="text-lg font-bold">核心防护总览</h2>
+<p class="text-sm text-slate-500 mt-1">统一查看账户级防护状态与高风险策略执行结果</p>
+</div>
+<span class="px-3 py-1 bg-green-100 text-green-700 text-[10px] rounded-full font-bold uppercase tracking-wider">全部策略正常</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="p-5 rounded-2xl border border-slate-100 bg-slate-50 card-hover">
+<div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4">
+<iconify-icon class="text-2xl" icon="mdi:shield-check-outline"></iconify-icon>
+</div>
+<p class="text-xs text-slate-400 uppercase tracking-widest mb-2">实时拦截</p>
+<p class="text-2xl font-black text-slate-900">24 / 24</p>
+<p class="text-xs text-slate-500 mt-2">近 24 小时内高风险交易全部完成拦截与二次确认。</p>
+</div>
+<div class="p-5 rounded-2xl border border-slate-100 bg-slate-50 card-hover">
+<div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4">
+<iconify-icon class="text-2xl" icon="mdi:account-lock-outline"></iconify-icon>
+</div>
+<p class="text-xs text-slate-400 uppercase tracking-widest mb-2">身份核验</p>
+<p class="text-2xl font-black text-slate-900">3 层</p>
+<p class="text-xs text-slate-500 mt-2">生物识别、短信口令、硬件密钥构成当前账户的核验基线。</p>
+</div>
+<div class="p-5 rounded-2xl border border-slate-100 bg-slate-50 card-hover">
+<div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+<iconify-icon class="text-2xl" icon="mdi:timeline-check-outline"></iconify-icon>
+</div>
+<p class="text-xs text-slate-400 uppercase tracking-widest mb-2">风险策略</p>
+<p class="text-2xl font-black text-slate-900">7 项</p>
+<p class="text-xs text-slate-500 mt-2">含境外登录拦截、大额交易升级核验和异常授权回收。</p>
+</div>
+</div>
+</section>
+
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="p-6 border-b border-slate-100">
+<h2 class="text-lg font-bold">MFA 多因素核验中心</h2>
+<p class="text-sm text-slate-500 mt-1">为支付、转账、改密等高风险操作提供多层物理及生物保障</p>
+</div>
+<div class="divide-y divide-slate-50">
+<div class="p-6 flex items-center justify-between">
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center">
+<iconify-icon class="text-2xl text-green-600" icon="mdi:face-recognition"></iconify-icon>
+</div>
+<div>
+<h4 class="font-bold text-slate-800">生物识别 (Face ID / 指纹)</h4>
+<p class="text-xs text-slate-500">当前设备：iPhone 15 Pro • 默认开启</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-green-100 text-green-700 text-[10px] rounded-full font-bold uppercase tracking-wider">最高安全级别</span>
+</div>
+<div class="p-6 flex items-center justify-between">
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center">
+<iconify-icon class="text-2xl text-blue-600" icon="mdi:cellphone-message"></iconify-icon>
+</div>
+<div>
+<h4 class="font-bold text-slate-800">动态短信口令 (SMS OTP)</h4>
+<p class="text-xs text-slate-500">尾号 9281 • 作为次选备份验证方式</p>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<span class="text-[11px] text-slate-400 font-bold">已开启</span>
+<div class="relative inline-block align-middle">
+<input checked="" class="switch-checkbox" id="toggleSMS" name="toggleSMS" type="checkbox"/>
+<label class="switch-label" for="toggleSMS"></label>
+</div>
+</div>
+</div>
+<div class="p-6 flex items-center justify-between">
+<div class="flex items-center space-x-4">
+<div class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center">
+<iconify-icon class="text-2xl text-indigo-600" icon="mdi:usb-flash-drive"></iconify-icon>
+</div>
+<div>
+<h4 class="font-bold text-slate-800">硬件 U 盾 / FIDO 密钥</h4>
+<p class="text-xs text-slate-500">适合大额转账用户，提供物理层级隔离防护</p>
+</div>
+</div>
+<button class="text-indigo-600 text-xs font-bold hover:underline">立即绑定设备</button>
+</div>
+</div>
+</section>
+
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h2 class="text-lg font-bold">智能策略与拦截阈值</h2>
+<p class="text-sm text-slate-500 mt-1">根据交易风险与环境可信度动态切换防护强度</p>
+</div>
+<button class="text-xs text-blue-600 font-bold hover:underline">查看策略版本</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="rounded-2xl border border-slate-100 p-5 bg-slate-50">
+<div class="flex items-center justify-between mb-3">
+<h4 class="font-bold text-slate-800">大额转账升级核验</h4>
+<span class="px-2 py-1 bg-red-100 text-red-600 text-[10px] rounded-full font-bold">已启用</span>
+</div>
+<p class="text-xs text-slate-500 leading-relaxed">单笔金额超过 ￥50,000 时，自动叠加 Face ID + SMS OTP 双重验证。</p>
+</div>
+<div class="rounded-2xl border border-slate-100 p-5 bg-slate-50">
+<div class="flex items-center justify-between mb-3">
+<h4 class="font-bold text-slate-800">陌生设备登录拦截</h4>
+<span class="px-2 py-1 bg-amber-100 text-amber-600 text-[10px] rounded-full font-bold">高敏感</span>
+</div>
+<p class="text-xs text-slate-500 leading-relaxed">新设备且定位偏离常住城市超过 800 公里时，必须执行人工视频复核。</p>
+</div>
+<div class="rounded-2xl border border-slate-100 p-5 bg-slate-50">
+<div class="flex items-center justify-between mb-3">
+<h4 class="font-bold text-slate-800">高频异常点击识别</h4>
+<span class="px-2 py-1 bg-green-100 text-green-600 text-[10px] rounded-full font-bold">运行中</span>
+</div>
+<p class="text-xs text-slate-500 leading-relaxed">连续 5 秒内多次触发敏感操作时，自动判定为脚本或诱导流程并暂缓放行。</p>
+</div>
+<div class="rounded-2xl border border-slate-100 p-5 bg-slate-50">
+<div class="flex items-center justify-between mb-3">
+<h4 class="font-bold text-slate-800">第三方授权回收</h4>
+<span class="px-2 py-1 bg-blue-100 text-blue-600 text-[10px] rounded-full font-bold">自动清理</span>
+</div>
+<p class="text-xs text-slate-500 leading-relaxed">超过 90 天未使用且具备支付能力的弱授权，将进入待清理队列并提醒用户确认。</p>
+</div>
+</div>
+</section>
+</div>
+
+<div class="security-panel hidden space-y-6" id="panel-devices">
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100">
+<div class="p-6 border-b border-slate-100">
+<h2 class="text-lg font-bold">登录设备管理</h2>
+<p class="text-sm text-slate-500 mt-1">检查最近活跃终端，识别陌生设备与异常环境</p>
+</div>
+<div class="p-0 overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold">
+<tr>
+<th class="px-6 py-4">设备名称</th>
+<th class="px-6 py-4">登录地点</th>
+<th class="px-6 py-4">最后活跃</th>
+<th class="px-6 py-4">环境可信度</th>
+<th class="px-6 py-4 text-right">操作</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<iconify-icon class="text-xl text-blue-600" icon="mdi:cellphone"></iconify-icon>
+<div>
+<p class="font-bold">iPhone 15 Pro</p>
+<p class="text-[10px] text-green-500">当前正在使用</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-500">上海 · 浦东新区</td>
+<td class="px-6 py-4 text-slate-500">10:24:55</td>
+<td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 text-[10px] rounded-full font-bold">100%</span></td>
+<td class="px-6 py-4 text-right">—</td>
+</tr>
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<iconify-icon class="text-xl text-slate-400" icon="mdi:laptop"></iconify-icon>
+<div>
+<p class="font-bold">MacBook Air M2</p>
+<p class="text-[10px] text-slate-400">Chrome 浏览器</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-500">北京 · 海淀区</td>
+<td class="px-6 py-4 text-slate-500">昨天 18:30</td>
+<td class="px-6 py-4"><span class="px-2 py-1 bg-blue-100 text-blue-700 text-[10px] rounded-full font-bold">92%</span></td>
+<td class="px-6 py-4 text-right">
+<button class="text-red-500 font-bold hover:underline">移除</button>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center space-x-3">
+<iconify-icon class="text-xl text-slate-400" icon="mdi:tablet"></iconify-icon>
+<div>
+<p class="font-bold">iPad Air</p>
+<p class="text-[10px] text-slate-400">APP 端登录</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-slate-500">成都 · 武侯区</td>
+<td class="px-6 py-4 text-slate-500">2026-04-10</td>
+<td class="px-6 py-4"><span class="px-2 py-1 bg-amber-100 text-amber-700 text-[10px] rounded-full font-bold">74%</span></td>
+<td class="px-6 py-4 text-right">
+<button class="text-red-500 font-bold hover:underline">移除</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white rounded-2xl border border-slate-100 p-5">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-bold text-slate-800">网络环境</h3>
+<iconify-icon class="text-2xl text-blue-600" icon="mdi:wifi-check"></iconify-icon>
+</div>
+<p class="text-2xl font-black text-slate-900">可信</p>
+<p class="text-xs text-slate-500 mt-2">当前连接家庭宽带，IP 与常驻地址匹配，无代理转发风险。</p>
+</div>
+<div class="bg-white rounded-2xl border border-slate-100 p-5">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-bold text-slate-800">系统完整性</h3>
+<iconify-icon class="text-2xl text-emerald-600" icon="mdi:shield-sync-outline"></iconify-icon>
+</div>
+<p class="text-2xl font-black text-slate-900">良好</p>
+<p class="text-xs text-slate-500 mt-2">近 7 天未检测到越狱、Root 或恶意注入框架痕迹。</p>
+</div>
+<div class="bg-white rounded-2xl border border-slate-100 p-5">
+<div class="flex items-center justify-between mb-3">
+<h3 class="font-bold text-slate-800">登录习惯偏移</h3>
+<iconify-icon class="text-2xl text-amber-600" icon="mdi:map-marker-alert-outline"></iconify-icon>
+</div>
+<p class="text-2xl font-black text-slate-900">轻微</p>
+<p class="text-xs text-slate-500 mt-2">最近 3 次登录均来自国内常驻城市，偏移处于可接受阈值内。</p>
+</div>
+</section>
+</div>
+
+<div class="security-panel hidden space-y-6" id="panel-mfa">
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h2 class="text-lg font-bold">MFA 认证编排</h2>
+<p class="text-sm text-slate-500 mt-1">不同风险等级下自动切换不同验证链路</p>
+</div>
+<button class="text-xs text-blue-600 font-bold hover:underline">导出核验策略</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="rounded-2xl border border-slate-100 p-5 bg-slate-50">
+<p class="text-[10px] uppercase tracking-widest text-slate-400 mb-2">低风险</p>
+<h4 class="font-bold text-slate-800 mb-2">常用设备 + 常住地</h4>
+<p class="text-xs text-slate-500">优先采用 Face ID，验证成功后直接放行。</p>
+</div>
+<div class="rounded-2xl border border-slate-100 p-5 bg-slate-50">
+<p class="text-[10px] uppercase tracking-widest text-slate-400 mb-2">中风险</p>
+<h4 class="font-bold text-slate-800 mb-2">大额转账 / 新收款人</h4>
+<p class="text-xs text-slate-500">执行 Face ID + SMS OTP 双因子确认，并校验收款方信誉评分。</p>
+</div>
+<div class="rounded-2xl border border-slate-100 p-5 bg-slate-50">
+<p class="text-[10px] uppercase tracking-widest text-slate-400 mb-2">高风险</p>
+<h4 class="font-bold text-slate-800 mb-2">境外设备 / 异常脚本特征</h4>
+<p class="text-xs text-slate-500">强制启用硬件密钥或人工视频核验，不允许纯短信放行。</p>
+</div>
+</div>
+</section>
+
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+<h3 class="font-bold text-slate-800 mb-4">备份恢复方式</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between rounded-xl bg-slate-50 p-4 border border-slate-100">
+<div>
+<p class="text-sm font-bold text-slate-800">一次性恢复码</p>
+<p class="text-xs text-slate-500 mt-1">剩余 6 组，适用于设备遗失场景</p>
+</div>
+<button class="text-blue-600 text-xs font-bold hover:underline">查看</button>
+</div>
+<div class="flex items-center justify-between rounded-xl bg-slate-50 p-4 border border-slate-100">
+<div>
+<p class="text-sm font-bold text-slate-800">紧急联系人确认</p>
+<p class="text-xs text-slate-500 mt-1">已绑定 1 位紧急联系人，用于账户救援</p>
+</div>
+<button class="text-blue-600 text-xs font-bold hover:underline">管理</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+<h3 class="font-bold text-slate-800 mb-4">最近 MFA 事件</h3>
+<div class="space-y-4">
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+<iconify-icon icon="mdi:check"></iconify-icon>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-800">转账复核通过</p>
+<p class="text-xs text-slate-500">2026-04-14 09:15 • Face ID + SMS OTP</p>
+</div>
+</div>
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+<iconify-icon icon="mdi:cellphone-key"></iconify-icon>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-800">短信口令重新签发</p>
+<p class="text-xs text-slate-500">2026-04-13 18:42 • 原因：验证码超时</p>
+</div>
+</div>
+<div class="flex items-start space-x-3">
+<div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+<iconify-icon icon="mdi:usb-flash-drive"></iconify-icon>
+</div>
+<div>
+<p class="text-sm font-bold text-slate-800">硬件密钥待绑定</p>
+<p class="text-xs text-slate-500">建议用于金额超过 ￥200,000 的交易场景</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+
+<div class="security-panel hidden space-y-6" id="panel-privacy">
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<div>
+<h2 class="text-lg font-bold">授权与隐私控制</h2>
+<p class="text-sm text-slate-500 mt-1">基于 BC-004 规范，管理您的全域敏感数据接口权限</p>
+</div>
+<button class="text-xs text-red-500 font-bold hover:bg-red-50 px-3 py-1.5 rounded-lg transition-all">一键清空弱授权</button>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-4 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img class="w-10 h-10 rounded bg-slate-100" src="/agent-py/static/source/images/placeholder.svg"/>
+<div>
+<h5 class="text-sm font-bold">微信支付互联</h5>
+<p class="text-[10px] text-slate-400">权限：资产查询、快速交易</p>
+</div>
+</div>
+<iconify-icon class="text-slate-300" icon="mdi:chevron-right"></iconify-icon>
+</div>
+<div class="p-4 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img class="w-10 h-10 rounded bg-slate-100" src="/agent-py/static/source/images/placeholder.svg"/>
+<div>
+<h5 class="text-sm font-bold">某生活购物 App</h5>
+<p class="text-[10px] text-slate-400">权限：免密支付 (上限 ￥200)</p>
+</div>
+</div>
+<iconify-icon class="text-slate-300" icon="mdi:chevron-right"></iconify-icon>
+</div>
+<div class="p-4 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img class="w-10 h-10 rounded bg-slate-100" src="/agent-py/static/source/images/placeholder.svg"/>
+<div>
+<h5 class="text-sm font-bold">公积金提取服务</h5>
+<p class="text-[10px] text-slate-400">权限：身份信息读取</p>
+</div>
+</div>
+<iconify-icon class="text-slate-300" icon="mdi:chevron-right"></iconify-icon>
+</div>
+<div class="p-4 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<img class="w-10 h-10 rounded bg-slate-100" src="/agent-py/static/source/images/placeholder.svg"/>
+<div>
+<h5 class="text-sm font-bold">房产交易中介端</h5>
+<p class="text-[10px] text-slate-400">权限：征信报告读取 (1 次性)</p>
+</div>
+</div>
+<span class="text-[10px] bg-slate-100 px-2 py-0.5 rounded text-slate-400">已过期</span>
+</div>
+</div>
+</div>
+</section>
+
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white rounded-2xl border border-slate-100 p-5">
+<h3 class="font-bold text-slate-800 mb-3">姓名脱敏</h3>
+<p class="text-xs text-slate-500 leading-relaxed">对外展示默认保留姓氏与首字，敏感场景需二次认证后方可展开。</p>
+</div>
+<div class="bg-white rounded-2xl border border-slate-100 p-5">
+<h3 class="font-bold text-slate-800 mb-3">账户截断显示</h3>
+<p class="text-xs text-slate-500 leading-relaxed">银行卡、手机号与身份证号统一按“前 3 后 4”规则脱敏。</p>
+</div>
+<div class="bg-white rounded-2xl border border-slate-100 p-5">
+<h3 class="font-bold text-slate-800 mb-3">授权水印追踪</h3>
+<p class="text-xs text-slate-500 leading-relaxed">导出的报告与共享页面自动叠加用户标识，便于追踪外泄源。</p>
+</div>
+</section>
+</div>
+
+<div class="security-panel hidden space-y-6" id="panel-logs">
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100">
+<div class="p-6 border-b border-slate-100 flex items-center justify-between">
+<div>
+<h2 class="text-lg font-bold">敏感操作日志</h2>
+<p class="text-sm text-slate-500 mt-1">覆盖改密、转账、设备移除、授权放开等关键动作</p>
+</div>
+<button class="text-xs text-blue-600 font-bold hover:underline">导出近 30 天</button>
+</div>
+<div class="p-0 overflow-x-auto">
+<table class="w-full text-sm text-left">
+<thead class="bg-slate-50 text-slate-500 uppercase text-[10px] font-bold">
+<tr>
+<th class="px-6 py-4">时间</th>
+<th class="px-6 py-4">操作</th>
+<th class="px-6 py-4">来源</th>
+<th class="px-6 py-4">结果</th>
+<th class="px-6 py-4">备注</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<tr>
+<td class="px-6 py-4 text-slate-500">2026-04-14 09:15</td>
+<td class="px-6 py-4 font-bold text-slate-800">大额转账复核</td>
+<td class="px-6 py-4 text-slate-500">iPhone 15 Pro / 上海</td>
+<td class="px-6 py-4"><span class="px-2 py-1 bg-green-100 text-green-700 text-[10px] rounded-full font-bold">已通过</span></td>
+<td class="px-6 py-4 text-slate-500">Face ID + SMS OTP</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-slate-500">2026-04-13 18:42</td>
+<td class="px-6 py-4 font-bold text-slate-800">验证码重发</td>
+<td class="px-6 py-4 text-slate-500">MacBook Air / 北京</td>
+<td class="px-6 py-4"><span class="px-2 py-1 bg-blue-100 text-blue-700 text-[10px] rounded-full font-bold">已记录</span></td>
+<td class="px-6 py-4 text-slate-500">短信超时，未触发异常</td>
+</tr>
+<tr>
+<td class="px-6 py-4 text-slate-500">2026-04-12 22:15</td>
+<td class="px-6 py-4 font-bold text-slate-800">异地登录拦截</td>
+<td class="px-6 py-4 text-slate-500">新西兰 / 未知设备</td>
+<td class="px-6 py-4"><span class="px-2 py-1 bg-red-100 text-red-700 text-[10px] rounded-full font-bold">已拦截</span></td>
+<td class="px-6 py-4 text-slate-500">要求人工视频核验</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+<h3 class="font-bold text-slate-800 mb-4">审计提醒</h3>
+<div class="space-y-4">
+<div class="flex items-start space-x-3 p-4 rounded-xl bg-amber-50 border border-amber-100">
+<iconify-icon class="text-xl text-amber-600 mt-0.5" icon="mdi:alert-outline"></iconify-icon>
+<div>
+<p class="text-sm font-bold text-slate-800">存在 1 项待确认的弱授权</p>
+<p class="text-xs text-slate-500 mt-1">建议前往“隐私与数据脱敏”页面确认是否保留某生活购物 App 的免密权限。</p>
+</div>
+</div>
+<div class="flex items-start space-x-3 p-4 rounded-xl bg-blue-50 border border-blue-100">
+<iconify-icon class="text-xl text-blue-600 mt-0.5" icon="mdi:file-clock-outline"></iconify-icon>
+<div>
+<p class="text-sm font-bold text-slate-800">近 7 天无高危越权访问</p>
+<p class="text-xs text-slate-500 mt-1">审计链路完整，可满足后续申诉复核与监管抽查取证。</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<footer class="bg-slate-900 text-slate-400 py-8 mt-12">
+<div class="max-w-[1440px] mx-auto px-8 text-center text-[10px]">
+            © 2026 慧眼识诈 - 金融级个人反诈安全系统 版权所有. 课题编号: SE2026-13
+        </div>
+</footer>
+<script>
+        const tabButtons = document.querySelectorAll('.security-tab');
+        const panels = document.querySelectorAll('.security-panel');
+
+        function setTabState(activeTab) {
+            tabButtons.forEach((button) => {
+                const isActive = button.dataset.tab === activeTab;
+                button.classList.toggle('bg-blue-50', isActive);
+                button.classList.toggle('text-blue-600', isActive);
+                button.classList.toggle('font-bold', isActive);
+                button.classList.toggle('text-slate-600', !isActive);
+                button.classList.toggle('hover:bg-slate-50', !isActive);
+                button.classList.toggle('font-medium', !isActive);
+            });
+
+            panels.forEach((panel) => {
+                panel.classList.toggle('hidden', panel.id !== `panel-${activeTab}`);
+            });
+        }
+
+        tabButtons.forEach((button) => {
+            button.addEventListener('click', () => setTabState(button.dataset.tab));
+        });
+
+        setTabState('core');
+    </script>
+</body>
+</html>

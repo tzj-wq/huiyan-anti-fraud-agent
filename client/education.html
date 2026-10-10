@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>风险教育与演练 - 慧眼识诈</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+<style>
+        @font-face {
+            font-family: 'Inter';
+            src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: #f8fafc; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); }
+        .progress-bar { transition: width 1s ease-in-out; }
+        .card-hover:hover { transform: translateY(-2px); transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="text-slate-800">
+<!-- 顶部导航 -->
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center space-x-3">
+<a class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center shadow-lg" href="index.html">
+<iconify-icon class="text-white text-2xl" icon="mdi:shield-check"></iconify-icon>
+</a>
+<div>
+<h1 class="text-xl font-bold text-slate-900 tracking-tight">风险教育中心</h1>
+<p class="text-[10px] text-blue-600 font-bold uppercase tracking-widest">提升您的防诈免疫力</p>
+</div>
+</div>
+<div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="index.html">
+<iconify-icon icon="mdi:home-outline"></iconify-icon><span>安全首页</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="security.html">
+<iconify-icon icon="mdi:lock-outline"></iconify-icon><span>安全中心</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="appeals.html">
+<iconify-icon icon="mdi:file-document-edit-outline"></iconify-icon><span>申诉解封</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="report.html">
+<iconify-icon icon="mdi:alert-octagon-outline"></iconify-icon><span>举报查询</span>
+</a>
+<a class="text-blue-600 flex items-center space-x-1 border-b-2 border-blue-600 pb-1" href="education.html">
+<iconify-icon icon="mdi:school"></iconify-icon><span>风险教育</span>
+</a>
+</div>
+<div class="flex items-center space-x-4">
+<div class="bg-blue-50 px-3 py-1 rounded-full border border-blue-100 flex items-center space-x-2">
+<iconify-icon class="text-orange-500" icon="mdi:fire"></iconify-icon>
+<span class="text-xs font-bold text-blue-800">学习积分: 2,450</span>
+</div>
+</div>
+</nav>
+<main class="max-w-[1440px] mx-auto p-8 grid grid-cols-12 gap-8">
+<!-- 左侧：课程与演练 -->
+<div class="col-span-12 lg:col-span-8 space-y-8">
+<!-- 学习进度概览 -->
+<div class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm flex items-center justify-between relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="text-2xl font-bold mb-2">欢迎回来，防诈达人！</h2>
+<p class="text-slate-500 text-sm mb-6">您已击败了全国 88% 的用户，继续保持学习，守护财富安全。</p>
+<div class="flex space-x-6">
+<div>
+<p class="text-2xl font-black text-blue-600">14</p>
+<p class="text-[10px] text-slate-400 font-bold uppercase">连续打卡</p>
+</div>
+<div class="border-l border-slate-100 pl-6">
+<p class="text-2xl font-black text-blue-600">32</p>
+<p class="text-[10px] text-slate-400 font-bold uppercase">完成演练</p>
+</div>
+<div class="border-l border-slate-100 pl-6">
+<p class="text-2xl font-black text-blue-600">890</p>
+<p class="text-[10px] text-slate-400 font-bold uppercase">识别线索</p>
+</div>
+</div>
+</div>
+<div class="w-32 h-32 relative z-10">
+<svg class="w-full h-full text-blue-600" viewbox="0 0 36 36">
+<path class="text-slate-100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3"></path>
+<path class="progress-bar" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="88, 100" stroke-linecap="round" stroke-width="3"></path>
+<text class="text-[8px] font-bold" fill="currentColor" text-anchor="middle" x="18" y="20.35">88%</text>
+</svg>
+</div>
+<!-- 装饰 -->
+<div class="absolute -right-10 -bottom-10 opacity-5">
+<iconify-icon class="text-[200px]" icon="mdi:school"></iconify-icon>
+</div>
+</div>
+<!-- 模拟演练实验室 -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-bold text-slate-900 flex items-center">
+<iconify-icon class="mr-2 text-blue-600" icon="mdi:test-tube"></iconify-icon> 实时防诈模拟演练
+                    </h3>
+<span class="text-xs text-slate-400">完成演练可获得双倍积分</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-white rounded-2xl border border-slate-100 overflow-hidden card-hover group cursor-pointer">
+<div class="h-40 bg-slate-100 relative">
+<img class="w-full h-full object-cover opacity-80" src="/agent-py/static/source/images/placeholder.svg"/>
+<div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm shadow-xl">进入模拟</span>
+</div>
+<span class="absolute top-4 left-4 px-2 py-1 bg-red-600 text-white text-[10px] font-bold rounded">高难度</span>
+</div>
+<div class="p-6">
+<h4 class="font-bold text-slate-800 mb-2">AI 换脸亲情电话骗局</h4>
+<p class="text-xs text-slate-500 leading-relaxed mb-4">模拟一段来自“亲属”的求救视频，学习如何多维度校验对方身份真实性。</p>
+<div class="flex items-center justify-between text-[10px] text-slate-400">
+<span><iconify-icon class="mr-1" icon="mdi:account-group"></iconify-icon> 12.4k 人参与</span>
+<span>耗时: 5分钟</span>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl border border-slate-100 overflow-hidden card-hover group cursor-pointer">
+<div class="h-40 bg-slate-100 relative">
+<img class="w-full h-full object-cover opacity-80" src="/agent-py/static/source/images/placeholder.svg"/>
+<div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="bg-white text-slate-900 px-6 py-2 rounded-full font-bold text-sm shadow-xl">进入模拟</span>
+</div>
+<span class="absolute top-4 left-4 px-2 py-1 bg-blue-600 text-white text-[10px] font-bold rounded">必修课</span>
+</div>
+<div class="p-6">
+<h4 class="font-bold text-slate-800 mb-2">钓鱼链接域名识别专项</h4>
+<p class="text-xs text-slate-500 leading-relaxed mb-4">在 20 个极度逼真的银行域名中，找出唯一的官方网站地址。</p>
+<div class="flex items-center justify-between text-[10px] text-slate-400">
+<span><iconify-icon class="mr-1" icon="mdi:account-group"></iconify-icon> 45.1k 人参与</span>
+<span>耗时: 3分钟</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 错题学习接口 (核心功能) -->
+<section class="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-sm">
+<div class="p-8 border-b border-slate-50 flex items-center justify-between">
+<div>
+<h3 class="text-xl font-bold text-slate-900">个性化“错题”练习</h3>
+<p class="text-sm text-slate-500 mt-1">AI 引擎根据您的历史漏报、误判记录自动生成的强化方案</p>
+</div>
+<iconify-icon class="text-4xl text-blue-600 opacity-20" icon="mdi:auto-fix"></iconify-icon>
+</div>
+<div class="divide-y divide-slate-50">
+<div class="p-8 flex items-start space-x-6">
+<div class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center shrink-0">
+<iconify-icon class="text-3xl text-orange-500" icon="mdi:file-search-outline"></iconify-icon>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-2">
+<h4 class="font-bold text-slate-800">未掌握点：官方客服 95 号段伪装</h4>
+<span class="text-[10px] px-2 py-0.5 bg-orange-100 text-orange-600 rounded font-bold uppercase">待强化</span>
+</div>
+<p class="text-xs text-slate-500 leading-relaxed">在上周的拦截日志中，您曾点击了一个伪装成 95XXX 的非官方营销链接。学习官方 95 号段的校验位逻辑。</p>
+<div class="mt-4 flex space-x-3">
+<button class="px-4 py-1.5 bg-blue-600 text-white text-[10px] font-bold rounded-lg">开始专项复习</button>
+<button class="px-4 py-1.5 bg-slate-50 text-slate-400 text-[10px] font-bold rounded-lg border border-slate-100">查看原理</button>
+</div>
+</div>
+</div>
+<div class="p-8 flex items-start space-x-6">
+<div class="w-16 h-16 bg-green-50 rounded-2xl flex items-center justify-center shrink-0">
+<iconify-icon class="text-3xl text-green-500" icon="mdi:shield-key-outline"></iconify-icon>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-2">
+<h4 class="font-bold text-slate-800">已掌握点：退款流程诈骗识别</h4>
+<span class="text-[10px] px-2 py-0.5 bg-green-100 text-green-600 rounded font-bold uppercase">已通关</span>
+</div>
+<p class="text-xs text-slate-500 leading-relaxed">您已经能够完美识别要求“扫码退款”或“开启远程协助”的虚假电商客服骗局。</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- 右侧：榜单与任务 -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<!-- 每日挑战 -->
+<div class="bg-gradient-to-br from-indigo-900 to-slate-900 rounded-3xl p-6 text-white">
+<h3 class="font-bold text-lg mb-6 flex items-center">
+<iconify-icon class="mr-2 text-indigo-400" icon="mdi:calendar-check"></iconify-icon> 今日学习任务
+                </h3>
+<div class="space-y-4">
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 border-2 border-indigo-400 rounded flex items-center justify-center">
+<iconify-icon class="text-transparent" icon="mdi:check"></iconify-icon>
+</div>
+<span class="text-sm text-indigo-100">阅读最新一期《反诈周报》</span>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 border-2 border-green-400 rounded flex items-center justify-center bg-green-400">
+<iconify-icon class="text-slate-900 text-xs" icon="mdi:check"></iconify-icon>
+</div>
+<span class="text-sm text-slate-400 line-through">完成账户年度安全自查</span>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-5 h-5 border-2 border-indigo-400 rounded flex items-center justify-center">
+</div>
+<span class="text-sm text-indigo-100">模拟演练：大额理财诈骗</span>
+</div>
+</div>
+<button class="w-full mt-8 py-3 bg-white text-indigo-900 font-bold rounded-2xl shadow-xl hover:scale-[1.02] transition-transform">领取任务奖励</button>
+</div>
+<!-- 反诈英雄榜 -->
+<div class="bg-white rounded-3xl border border-slate-100 shadow-sm p-6">
+<h3 class="font-bold text-slate-900 mb-6 flex items-center justify-between">
+<span>反诈英雄榜 (本周)</span>
+<iconify-icon class="text-2xl text-amber-500" icon="mdi:podium-gold"></iconify-icon>
+</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<span class="w-6 text-xs font-black text-amber-500 italic">01</span>
+<img class="w-10 h-10 rounded-full bg-slate-100 border-2 border-amber-500" src="/agent-py/static/source/images/placeholder.svg"/>
+<div>
+<p class="text-xs font-bold">老李头 * 反诈侠</p>
+<p class="text-[10px] text-slate-400">举报有效线索: 142条</p>
+</div>
+</div>
+<span class="text-xs font-bold text-slate-600">9850 pt</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<span class="w-6 text-xs font-black text-slate-400 italic">02</span>
+<img class="w-10 h-10 rounded-full bg-slate-100 border-2 border-slate-300" src="/agent-py/static/source/images/placeholder.svg"/>
+<div>
+<p class="text-xs font-bold">学生小张 * 安全员</p>
+<p class="text-[10px] text-slate-400">识别模拟演练: 100%</p>
+</div>
+</div>
+<span class="text-xs font-bold text-slate-600">8720 pt</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-3">
+<span class="w-6 text-xs font-black text-orange-400 italic">03</span>
+<img class="w-10 h-10 rounded-full bg-slate-100 border-2 border-orange-400" src="/agent-py/static/source/images/placeholder.svg"/>
+<div>
+<p class="text-xs font-bold">反诈先锋 A</p>
+<p class="text-[10px] text-slate-400">社区答疑: 24次</p>
+</div>
+</div>
+<span class="text-xs font-bold text-slate-600">8100 pt</span>
+</div>
+</div>
+<button class="w-full mt-8 text-xs text-blue-600 font-bold hover:underline">查看完整榜单 »</button>
+</div>
+<!-- 知识分类 -->
+<div class="bg-slate-50 rounded-3xl p-6 border border-slate-100">
+<h3 class="font-bold text-slate-900 mb-4">知识专题分类</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1.5 bg-white border border-slate-200 text-xs text-slate-600 rounded-xl hover:border-blue-500 hover:text-blue-600 transition-all cursor-pointer">支付安全</span>
+<span class="px-3 py-1.5 bg-white border border-slate-200 text-xs text-slate-600 rounded-xl hover:border-blue-500 hover:text-blue-600 transition-all cursor-pointer">虚拟货币</span>
+<span class="px-3 py-1.5 bg-white border border-slate-200 text-xs text-slate-600 rounded-xl hover:border-blue-500 hover:text-blue-600 transition-all cursor-pointer">网络博彩</span>
+<span class="px-3 py-1.5 bg-white border border-slate-200 text-xs text-slate-600 rounded-xl hover:border-blue-500 hover:text-blue-600 transition-all cursor-pointer">刷单返利</span>
+<span class="px-3 py-1.5 bg-white border border-slate-200 text-xs text-slate-600 rounded-xl hover:border-blue-500 hover:text-blue-600 transition-all cursor-pointer">征信修复</span>
+<span class="px-3 py-1.5 bg-white border border-slate-200 text-xs text-slate-600 rounded-xl hover:border-blue-500 hover:text-blue-600 transition-all cursor-pointer">养老诈骗</span>
+</div>
+</div>
+</div>
+</main>
+<footer class="bg-slate-900 text-slate-400 py-12 mt-12">
+<div class="max-w-[1440px] mx-auto px-8 text-center">
+<div class="flex justify-center space-x-6 mb-8">
+<a class="hover:text-white transition-colors" href="#">课程合作</a>
+<a class="hover:text-white transition-colors" href="#">公益讲座</a>
+<a class="hover:text-white transition-colors" href="#">素材下载</a>
+<a class="hover:text-white transition-colors" href="#">讲师申请</a>
+</div>
+<p class="text-[10px]">© 2026 慧眼识诈 - 金融级个人反诈安全系统 版权所有. 课题编号: SE2026-13</p>
+</div>
+</footer>
+</body>
+</html>

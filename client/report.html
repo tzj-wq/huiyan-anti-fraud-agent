@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>举报与教育 - 慧眼识诈</title>
+<script src="https://modao.cc/agent-py/static/source/js/tailwindcss.3.4.3.js"></script>
+<script src="https://modao.cc/agent-py/static/source/js/iconify-icon.min.1.0.7.js"></script>
+<style>
+        @font-face {
+            font-family: 'Inter';
+            src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background-color: #f8fafc; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); }
+        .card-hover:hover { transform: translateY(-2px); transition: all 0.3s ease; }
+    </style>
+</head>
+<body class="text-slate-800">
+<!-- 顶部导航 -->
+<nav class="sticky top-0 z-50 bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-sm">
+<div class="flex items-center space-x-3">
+<a class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center shadow-lg" href="index.html">
+<iconify-icon class="text-white text-2xl" icon="mdi:shield-check"></iconify-icon>
+</a>
+<div>
+<h1 class="text-xl font-bold text-slate-900 tracking-tight">举报查询中心</h1>
+<p class="text-xs text-slate-500">线索提交、黑名单查询与奖励进度一站式管理</p>
+</div>
+</div>
+<div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="index.html">
+<iconify-icon icon="mdi:home-outline"></iconify-icon><span>安全首页</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="security.html">
+<iconify-icon icon="mdi:lock-outline"></iconify-icon><span>安全中心</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="appeals.html">
+<iconify-icon icon="mdi:file-document-edit-outline"></iconify-icon><span>申诉解封</span>
+</a>
+<a class="text-blue-600 flex items-center space-x-1 border-b-2 border-blue-600 pb-1" href="report.html">
+<iconify-icon icon="mdi:alert-octagon"></iconify-icon><span>举报查询</span>
+</a>
+<a class="text-slate-600 hover:text-blue-600 flex items-center space-x-1 transition-colors" href="education.html">
+<iconify-icon icon="mdi:school-outline"></iconify-icon><span>风险教育</span>
+</a>
+</div>
+<div class="flex items-center space-x-4">
+<div class="text-right">
+<p class="text-xs font-bold text-blue-600">反诈勋章: LV.3</p>
+<p class="text-[10px] text-slate-400">已贡献线索: 12 条</p>
+</div>
+<img alt="User Avatar" class="w-8 h-8 rounded-full bg-slate-200" src="https://modao.cc/agent-py/media/generated_images/2026-04-14/60b81be0df7545a6be827f3bd76ddf43.jpg"/>
+</div>
+</nav>
+<main class="max-w-[1440px] mx-auto p-8 grid grid-cols-12 gap-8">
+<!-- 左侧：快速查询与举报 -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<!-- 黑名单快速查询 -->
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+<div class="text-center mb-8">
+<h2 class="text-2xl font-bold text-slate-900">全网反诈大数据查询</h2>
+<p class="text-sm text-slate-500 mt-2">实时对接 CMARC 与国家公共黑名单库，涵盖电话、网址、UID</p>
+</div>
+<div class="relative max-w-2xl mx-auto flex">
+<div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 flex items-center">
+<iconify-icon class="text-2xl" icon="mdi:magnify"></iconify-icon>
+</div>
+<input class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-l-2xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" placeholder="输入手机号、网址、银行卡号或收款账号..." type="text"/>
+<button class="bg-blue-600 text-white font-bold px-8 py-4 rounded-r-2xl hover:bg-blue-700 transition-all">查询</button>
+</div>
+<div class="mt-6 flex justify-center space-x-8 text-[11px] text-slate-400 uppercase tracking-widest">
+<div class="flex items-center"><iconify-icon class="text-green-500 mr-1 text-base" icon="mdi:check-circle"></iconify-icon> 官方权威</div>
+<div class="flex items-center"><iconify-icon class="text-green-500 mr-1 text-base" icon="mdi:check-circle"></iconify-icon> 实时同步</div>
+<div class="flex items-center"><iconify-icon class="text-green-500 mr-1 text-base" icon="mdi:check-circle"></iconify-icon> 免费公开</div>
+</div>
+</div>
+<!-- 举报表单入口 -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl p-6 text-white card-hover cursor-pointer group">
+<div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-colors">
+<iconify-icon class="text-2xl" icon="mdi:alert-box"></iconify-icon>
+</div>
+<h3 class="font-bold text-lg mb-2">举报可疑信息</h3>
+<p class="text-xs text-slate-400 leading-relaxed mb-6">收到诈骗电话、垃圾短信或发现钓鱼网站？请点击此处提交，保护更多人免于损失。</p>
+<div class="flex items-center text-xs font-bold text-blue-400">
+                        立即提交线索 <iconify-icon class="ml-1" icon="mdi:arrow-right"></iconify-icon>
+</div>
+</div>
+<div class="bg-white rounded-2xl border border-slate-100 p-6 card-hover cursor-pointer border-dashed">
+<div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-6">
+<iconify-icon class="text-2xl text-blue-600" icon="mdi:gift"></iconify-icon>
+</div>
+<h3 class="font-bold text-lg mb-2 text-slate-800">举报奖励计划</h3>
+<p class="text-xs text-slate-500 leading-relaxed mb-6">2026年度“清网行动”奖励：每条有效高风险黑名单入库可获得 5-50 元奖励积分。</p>
+<div class="flex items-center text-xs font-bold text-slate-400">
+                        查看我的奖励 <iconify-icon class="ml-1" icon="mdi:arrow-right"></iconify-icon>
+</div>
+</div>
+</div>
+<!-- 教育专区：错题学习接口 -->
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+<div>
+<h3 class="font-bold text-slate-800">防诈“错题”强化训练</h3>
+<p class="text-xs text-slate-500 mt-1">根据您之前的风险识别习惯，AI 为您定制了薄弱环节强化</p>
+</div>
+<button class="px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg shadow-lg shadow-blue-100">开始今日挑战</button>
+</div>
+<div class="p-6">
+<div class="space-y-6">
+<div class="flex items-start space-x-4">
+<div class="w-8 h-8 rounded-full bg-red-100 text-red-600 flex items-center justify-center font-bold text-xs shrink-0">1</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-slate-800">薄弱点：钓鱼连接的后缀伪装识别</h4>
+<p class="text-xs text-slate-500 mt-1 leading-relaxed">您在 04-12 的模拟测试中，未识别出以 .sec-bank.net 结尾的伪造银行网站。</p>
+<div class="mt-3 flex space-x-2">
+<span class="px-2 py-1 bg-slate-100 text-slate-500 text-[10px] rounded">相似案例: 34个</span>
+<span class="px-2 py-1 bg-slate-100 text-slate-500 text-[10px] rounded">正确率: 45%</span>
+</div>
+</div>
+<button class="text-blue-600 text-xs font-bold self-center">复习知识点</button>
+</div>
+<div class="flex items-start space-x-4">
+<div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0">2</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-slate-800">薄弱点：屏幕共享类软件的权限套取</h4>
+<p class="text-xs text-slate-500 mt-1 leading-relaxed">识别“公检法”诈骗中要求开启远程桌面或屏幕共享的套路。</p>
+</div>
+<button class="text-blue-600 text-xs font-bold self-center">开始模拟</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 右侧：资讯与公告 -->
+<div class="col-span-12 lg:col-span-4 space-y-6">
+<!-- 官方公告 -->
+<div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+<h3 class="font-bold text-slate-800 mb-6 flex items-center">
+<iconify-icon class="mr-2 text-blue-600" icon="mdi:bullhorn-outline"></iconify-icon> 官方动态
+                </h3>
+<div class="space-y-6">
+<div class="group cursor-pointer">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-bold text-red-500 px-1.5 py-0.5 bg-red-50 rounded">置顶</span>
+<span class="text-[10px] text-slate-400">2026-04-14</span>
+</div>
+<h4 class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition-colors">关于“CMARC”预警中心数据库升级公告</h4>
+<p class="text-[11px] text-slate-500 mt-1 line-clamp-2">本次升级将引入全新的“资金追溯链”实时分析功能，能够实现 10 级跳转内的资金流向秒级锁定...</p>
+</div>
+<div class="group cursor-pointer">
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-bold text-slate-400 px-1.5 py-0.5 bg-slate-100 rounded">公告</span>
+<span class="text-[10px] text-slate-400">2026-04-12</span>
+</div>
+<h4 class="text-sm font-bold text-slate-800 group-hover:text-blue-600 transition-colors">2026 Q1 反诈成果白皮书发布</h4>
+<p class="text-[11px] text-slate-500 mt-1 line-clamp-2">今年第一季度共成功拦截诈骗转账 42.1 亿元，挽回群众损失...</p>
+</div>
+</div>
+<button class="w-full mt-6 text-xs text-slate-400 hover:text-blue-500 text-center font-medium">查看历史公告 »</button>
+</div>
+<!-- 案例库 -->
+<div class="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+<h3 class="font-bold text-blue-800 mb-4 flex items-center">
+<iconify-icon class="mr-2" icon="mdi:book-open-variant"></iconify-icon> 精选反诈案例
+                </h3>
+<div class="space-y-4">
+<div class="bg-white p-3 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex items-center space-x-3">
+<img class="w-12 h-12 rounded bg-slate-100" src="/agent-py/static/source/images/placeholder.svg"/>
+<div>
+<h5 class="text-xs font-bold text-slate-800">虚假投资平台“杀猪盘”拆解</h5>
+<p class="text-[10px] text-slate-400 mt-1">受害者：刘女士 | 损失：24万</p>
+</div>
+</div>
+</div>
+<div class="bg-white p-3 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex items-center space-x-3">
+<img class="w-12 h-12 rounded bg-slate-100" src="/agent-py/static/source/images/placeholder.svg"/>
+<div>
+<h5 class="text-xs font-bold text-slate-800">冒充公检法“清查资金”套路</h5>
+<p class="text-[10px] text-slate-400 mt-1">受害者：王先生 | 损失：120万</p>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 transition-all">进入案例大讲堂</button>
+</div>
+</div>
+</main>
+<footer class="bg-slate-900 text-slate-400 py-8 mt-12">
+<div class="max-w-[1440px] mx-auto px-8 text-center text-[10px]">
+            © 2026 慧眼识诈 - 金融级个人反诈安全系统 版权所有. 课题编号: SE2026-13
+        </div>
+</footer>
+</body>
+</html>

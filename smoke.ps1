@@ -1,6 +1,4 @@
-﻿# 慧眼识诈一键冒烟脚本（Windows PowerShell）
-# 三连验证：health → 真实检测（含语义 Agent 降级/参与）→ 审核助手（RAG 检索 + 建议）
-# 用法：.\smoke.ps1   （在项目根目录执行；后端需已启动，见 .\start.ps1）
+
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $MyInvocation.MyCommand.Path
